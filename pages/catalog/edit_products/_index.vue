@@ -366,26 +366,6 @@
                           class="demo-ruleForm d-flex"
                           action=""
                         >
-                          <div class="form-variant-block mb-0">
-                            <div>
-                              <label class="flex"
-                                >Имя
-                                <a-popover placement="top">
-                                  <template slot="content">
-                                    <span>{{ item.name }}</span>
-                                  </template>
-
-                                  <span class="nav-info">?</span>
-                                </a-popover></label
-                              >
-                            </div>
-                            <el-input
-                              v-model="item.name"
-                              class="disabled"
-                              placeholder="Имя..."
-                              type="text"
-                            ></el-input>
-                          </div>
                           <div
                             v-if="atributes.length > 0"
                             class="form-variant-block atribut_selects"
@@ -463,7 +443,6 @@
                         <div class="form-variant-block atribut_selects mb-0">
                           <div><label>Цена</label></div>
                           <el-input
-                            disabled
                             v-model="item.price"
                             placeholder="Price"
                             type="number"
@@ -503,7 +482,7 @@
                         >
                           <el-input placeholder="Поиск..." />
                         </el-form-item> -->
-                      
+
                         <div class="form-block mb-0">
                           <div>
                             <label
@@ -551,19 +530,20 @@
                             />
                           </span>
                         </div>
-                        <!-- <div class="form-block mb-0">
+                        <div class="form-block mb-0">
                           <div>
                             <label
                               >Stat
                               <a-popover placement="top">
                                 <template slot="content">
-                                  <span>Status</span>
+                                  <span>Status   {{ item.status }} 32423</span>
                                 </template>
                                 <span class="nav-info">?</span>
                               </a-popover></label
                             >
                           </div>
                           <span>
+                        
                             <a-switch
                               :checked="item.status == 'active'"
                               @change="
@@ -574,8 +554,7 @@
                               "
                             />
                           </span>
-                        </div> -->
-                      
+                        </div>
                       </div>
                       <div class="variant_btns mb-3">
                         <div
@@ -597,25 +576,22 @@
                 <!-- Validations -->
               </div>
               <div class="d-flex justify-content-start" v-if="atributes.length > 0">
-                <!-- <div class="create-inner-variant" @click="addValidation(element.id)">
+                <div class="create-inner-variant" @click="addValidation(element.id)">
                   <span v-html="addInnerValidatIcon"></span>
                   Добавит внутренний варизаци
-                </div> -->
-                <div
+                </div>
+                <!-- <div
                   class="create-inner-variant"
                   @click="currentProduct(element.id, false)"
                 >
                   <span v-html="addInnerValidatIcon"></span>
                   Добавить внутреннюю вариацию
-                </div>
+                </div> -->
               </div>
             </div>
           </transition-group>
           <div>
-            <div
-              class="add-variant create-inner-variant mt-0"
-              @click="currentProduct(null, true)"
-            >
+            <div class="add-variant create-inner-variant mt-0" @click="addProduct">
               <span v-html="addInnerValidatIcon"></span>
               Добавить вариации
             </div>
@@ -1509,8 +1485,7 @@ export default {
         this.loadingBtn = false;
       }
     },
-    switchStatus(e) {
-    },
+    switchStatus(e) {},
     async handlePreview(file) {
       if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj);
@@ -1674,7 +1649,7 @@ export default {
                   };
                 }
               ),
-              // status: elem.status,
+              status: elem.status,
               promotions: elem.promotions,
             };
           });
@@ -1758,7 +1733,7 @@ export default {
         characteristics: [],
         characteristicsValues: {},
         optionName: options,
-        // status: "active",
+        status: "active",
         promotions: [],
       });
     },
@@ -1816,7 +1791,7 @@ export default {
           optionName: options,
           characteristics: [],
           characteristicsValues: {},
-          // status: "active",
+          status: "active",
           promotions: [],
         },
       ];
@@ -2014,7 +1989,7 @@ export default {
             is_default: 1,
             is_popular: variant.is_popular,
             product_of_the_day: variant.product_of_the_day,
-            // status: variant.status,
+            status: variant.status,
             promotions:
               variant.promotions.length > 0
                 ? variant.promotions.map((promoItem) => promoItem.id)

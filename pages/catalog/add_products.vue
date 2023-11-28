@@ -403,7 +403,7 @@
                             type="number"
                           ></el-input>
                         </div>
-                        <el-form-item
+                        <!-- <el-form-item
                           prop="attributes"
                           label="Aкции "
                           class="form-variant-block"
@@ -426,8 +426,34 @@
                             >
                             </el-option>
                           </el-select>
+                        </el-form-item> -->
+                        <el-form-item
+                          prop="attributes"
+                          label="Aкции "
+                          class="form-variant-block form-block mb-0"
+                        >
+                          <a-select
+                            show-search
+                            ref="searchProductSelect"
+                            mode="multiple"
+                            v-model="item.promotions"
+                            placeholder="Aкции..."
+                            style="width: 100%"
+                            :default-active-first-option="false"
+                            :show-arrow="false"
+                            :filter-option="false"
+                            @search="handleSearchPromo"
+                          >
+                            <a-spin v-if="fetching" slot="notFoundContent" size="small" />
+                            <a-select-option
+                              v-for="d in promotionsData"
+                              :key="d.id"
+                              :value="d?.id"
+                            >
+                              {{ d?.short_name?.ru }}
+                            </a-select-option>
+                          </a-select>
                         </el-form-item>
-     
                         <div class="form-block">
                           <div>
                             <label
@@ -961,7 +987,7 @@ export default {
       cascaderCategories: [],
       lastCategory: [],
       lang: [
-          {
+        {
           key: "uz",
           label: "Uzbek",
         },
@@ -1032,6 +1058,7 @@ export default {
                 is_popular: 0,
                 product_of_the_day: 0,
                 status: "active",
+                promotions: [],
               },
             ],
           },
@@ -1110,6 +1137,7 @@ export default {
           ru: "",
         },
       },
+      promotionsData: [],
       fileListCategory: [],
       allAtributes: [],
       allGroups: [],
@@ -1202,8 +1230,7 @@ export default {
         this.loadingBtn = false;
       }
     },
-    switchStatus(e) {
-    },
+    switchStatus(e) {},
     async __POST_BRAND() {
       try {
         await this.$store.dispatch("fetchBrands/postBrands", this.brandData);
@@ -1352,6 +1379,7 @@ export default {
                 }
               ),
               status: elem.status,
+              promotions: elem.promotions,
             };
           });
           return {
@@ -1361,6 +1389,19 @@ export default {
         }),
       };
       return newData;
+    },
+    async handleSearchPromo(value) {
+      this.fetching = true;
+      if (value.length > 1) {
+        const searchProductData = await this.$store.dispatch(
+          "fetchPromotions/getPromotions",
+          {
+            search: value,
+          }
+        );
+        this.promotionsData = searchProductData.promotions.data;
+        this.fetching = false;
+      }
     },
     reloadCategories() {
       this.cascader = JSON.parse(localStorage.getItem("lastCategory"));
@@ -1414,6 +1455,7 @@ export default {
         characteristicsValues: {},
         optionName: options,
         status: "active",
+        promotions: [],
       });
     },
     deleteProduct(variantId) {

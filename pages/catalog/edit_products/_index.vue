@@ -949,6 +949,7 @@
                             v-model="
                               variations.characteristicsValues[`char_${characters.id}`]
                             "
+                            placeholder="Options"
                           />
                           <!-- <el-select
                             v-model="
@@ -2052,6 +2053,7 @@ export default {
       // this.promotionsData = promotionsArr.filter(
       //   (item) => !this.promotionsData.find((elem) => elem.id == item.id)
       // );
+      console.log(this.ruleForm);
       this.promotionsData = promotionsArr.filter(
         (obj, index) => promotionsArr.findIndex((item) => item.id === obj.id) === index
       );

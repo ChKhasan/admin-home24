@@ -257,8 +257,9 @@ export default {
       });
       this.totalPage = this.products.products?.total;
       this.loading = false;
+      console.log(this.products);
       this.data = this.products.products.data.map((item) => {
-        if (item.info.products[0].images.length > 0) {
+        if (item.info.products[0]?.images.length > 0) {
           return {
             ...item,
             key: item.id,

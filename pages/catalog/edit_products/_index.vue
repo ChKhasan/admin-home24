@@ -539,7 +539,7 @@
                         <div class="form-block mb-0">
                           <div>
                             <label
-                              >Stat
+                              >Status
                               <a-popover placement="top">
                                 <template slot="content">
                                   <span>Status {{ item.status }} </span>

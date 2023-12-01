@@ -173,7 +173,7 @@
                         id="status"
                         class="w-100"
                         popper-class="select-popper-hover"
-                        v-model="ruleForm.status"
+                        v-model="ruleForm.is_active"
                         default-first-option
                         placeholder="Статус"
                       >
@@ -366,6 +366,19 @@
                           class="demo-ruleForm d-flex"
                           action=""
                         >
+                          <div class="d-flex flex-column w-100">
+                            <el-form-item
+                              prop="name"
+                              label="Имя "
+                              class="form-variant-block mb-0"
+                            >
+                              <el-input placeholder="Имя (UZ)" v-model="item.name.ru" />
+                            </el-form-item>
+                            <el-form-item prop="name" class="form-variant-block mb-0">
+                              <el-input placeholder="Имя (RU)" v-model="item.name.uz" />
+                            </el-form-item>
+                          </div>
+
                           <div
                             v-if="atributes.length > 0"
                             class="form-variant-block atribut_selects"
@@ -475,13 +488,6 @@
                             </a-select-option>
                           </a-select>
                         </el-form-item>
-                        <!-- <el-form-item
-                          prop="attributes"
-                          label="Поиск продуктов "
-                          class="form-variant-block mb-0"
-                        >
-                          <el-input placeholder="Поиск..." />
-                        </el-form-item> -->
 
                         <div class="form-block mb-0">
                           <div>
@@ -536,14 +542,13 @@
                               >Stat
                               <a-popover placement="top">
                                 <template slot="content">
-                                  <span>Status   {{ item.status }} 32423</span>
+                                  <span>Status {{ item.status }} </span>
                                 </template>
                                 <span class="nav-info">?</span>
                               </a-popover></label
                             >
                           </div>
                           <span>
-                        
                             <a-switch
                               :checked="item.status == 'active'"
                               @change="
@@ -1134,11 +1139,11 @@ export default {
       ],
       options: [
         {
-          value: "active",
+          value: 1,
           label: "Активный",
         },
         {
-          value: "inactive",
+          value: 0,
           label: "Неактивный",
         },
       ],
@@ -1174,7 +1179,7 @@ export default {
           en: "",
         },
         brand_id: null,
-        status: "inactive",
+        is_active: 1,
         category_id: "",
         products: [
           {
@@ -1196,6 +1201,11 @@ export default {
                 product_of_the_day: 0,
                 status: "active",
                 promotions: [],
+                name: {
+                  ru: "",
+                  uz: "",
+                  en: "",
+                },
               },
             ],
           },
@@ -1378,7 +1388,7 @@ export default {
         const options = { ...this.atributNames };
         const newVariations = [
           {
-            name: seartProduct.info.name.ru,
+            name: seartProduct.info.name,
             id: 1,
             indexId: seartProduct.id,
             options: [1],
@@ -1390,6 +1400,11 @@ export default {
             characteristics: [],
             characteristicsValues: {},
             status: "active",
+            name: {
+              ru: "",
+              uz: "",
+              en: "",
+            },
             promotions: [],
           },
         ];
@@ -1420,7 +1435,7 @@ export default {
           characteristicsValues: {},
           optionName: { ...options },
           status: "active",
-          name: seartProduct.info.name.ru,
+          name: seartProduct.info.name,
           promotions: [],
         });
         product.images = [
@@ -1590,7 +1605,8 @@ export default {
 
         if (valid) {
           if (atributValid) {
-            this.__POST_PRODUCTS(newData);
+            console.log(newData);
+            // this.__POST_PRODUCTS(newData);
           }
         } else {
           return false;
@@ -1650,6 +1666,7 @@ export default {
                 }
               ),
               status: elem.status,
+              name: elem.name,
               promotions: elem.promotions,
             };
           });
@@ -1734,6 +1751,11 @@ export default {
         characteristicsValues: {},
         optionName: options,
         status: "active",
+        name: {
+          ru: "",
+          uz: "",
+          en: "",
+        },
         promotions: [],
       });
     },
@@ -1792,6 +1814,11 @@ export default {
           characteristics: [],
           characteristicsValues: {},
           status: "active",
+          name: {
+            ru: "",
+            uz: "",
+            en: "",
+          },
           promotions: [],
         },
       ];
@@ -1935,7 +1962,7 @@ export default {
       this.product = { ...data };
       this.ruleForm.brand_id = data.info.brand_id;
       this.ruleForm.model = data.info.products[0].model;
-      this.ruleForm.status = data.product?.status;
+      this.ruleForm.is_active = data.product?.is_active;
       if (data.product.info.category.parent?.parent?.id) {
         this.cascader.push(data.product.info.category.parent.parent.id);
         this.cascader.push(data.product.info.category.parent.id);
@@ -1977,7 +2004,7 @@ export default {
           let characteristics = variant.characteristic_options.map((charOp) => charOp.id);
           promotionsArr.push(...variant.promotions);
           return {
-            name: variant.name.ru,
+            name: variant.name,
             id: index + 1,
             constProduct: true,
             indexId: variant.id,

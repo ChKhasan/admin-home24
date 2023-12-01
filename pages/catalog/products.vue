@@ -133,7 +133,7 @@
               v-html="editIcon"
             >
             </span>
-            <!-- <a-popconfirm
+            <a-popconfirm
               v-if="checkAccess('products', 'DELETE')"
               title="Are you sure delete this product?"
               ok-text="Yes"
@@ -142,7 +142,7 @@
               @cancel="cancel"
             >
               <span class="action-btn" v-html="deleteIcon"> </span>
-            </a-popconfirm> -->
+            </a-popconfirm>
           </span>
         </a-table>
         <div class="d-flex justify-content-end mt-4" v-if="totalPage > params.pageSize">

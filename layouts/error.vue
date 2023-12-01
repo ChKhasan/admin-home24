@@ -3,6 +3,7 @@
     <div class="error-block">
       <div class="error-card d-flex flex-column align-items-center">
         <h1>
+      
           Oops!
         </h1>
         <div class="error-text">We can't find that page.</div>
@@ -18,5 +19,7 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: ['error']
+};
 </script>

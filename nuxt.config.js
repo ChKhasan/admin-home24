@@ -25,6 +25,7 @@ export default {
     "~/assets/scss/custom/page/_app-styles.scss",
     "~/assets/fonts/stylesheet.css",
   ],
+  serverMiddleware: ["~/serverMiddleware/blockImages.js"],
 
   plugins: [
     { src: "~plugins/element-ui.js", ssr: false },
@@ -33,7 +34,9 @@ export default {
     { src: "~/plugins/chart.js", mode: "client" },
     { src: "~plugins/v-mask.js", ssr: false },
     { src: "~plugins/apex-chart.js", ssr: false },
+    "~/plugins/errorHandling.js",
   ],
+
   axios: {
     credentials: true,
     init(axios) {

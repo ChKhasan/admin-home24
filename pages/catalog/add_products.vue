@@ -1495,6 +1495,7 @@ export default {
           characteristics: [],
           characteristicsValues: {},
           status: "active",
+          promotions: [],
         },
       ];
       this.ruleForm.products.push({

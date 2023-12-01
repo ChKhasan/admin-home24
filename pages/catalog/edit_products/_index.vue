@@ -164,9 +164,7 @@
                 >
                   <div
                     class="form-block status-style"
-                    :class="[
-                      ruleForm.status == 'active' ? 'status-active' : 'status-inactive',
-                    ]"
+                    :class="[ruleForm.is_active ? 'status-active' : 'status-inactive']"
                   >
                     <el-form-item label="Статус">
                       <el-select
@@ -1737,12 +1735,17 @@ export default {
       return options;
     },
     addValidation(variantId) {
+      const currentColorId = this.atributes.find(
+        (colorItem) => colorItem?.name.ru == "Цвет"
+      )?.id;
       const product = this.findProductWithId(variantId);
-      const options = { ...this.atributNames };
+      const options = { ...this.atributNames, [`at_${currentColorId}`]: currentColorId };
       product.variations.push({
         id: product.variations.at(-1).id + 1,
         indexId: 0,
-        options: [1],
+        options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
+          ? [this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id]
+          : [1],
         price: 0,
         is_default: 0,
         product_of_the_day: 0,
@@ -1962,7 +1965,7 @@ export default {
       this.product = { ...data };
       this.ruleForm.brand_id = data.info.brand_id;
       this.ruleForm.model = data.info.products[0].model;
-      this.ruleForm.is_active = data.product?.is_active;
+      this.ruleForm.is_active = data.info?.is_active;
       if (data.product.info.category.parent?.parent?.id) {
         this.cascader.push(data.product.info.category.parent.parent.id);
         this.cascader.push(data.product.info.category.parent.id);

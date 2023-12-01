@@ -1605,8 +1605,8 @@ export default {
 
         if (valid) {
           if (atributValid) {
-            console.log(newData);
-            // this.__POST_PRODUCTS(newData);
+            // console.log(newData);
+            this.__POST_PRODUCTS(newData);
           }
         } else {
           return false;

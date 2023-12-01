@@ -359,10 +359,10 @@
                           action=""
                         >
                           <div
-                            class="form-variant-block atribut_selects"
+                            class="form-variant-block atribut_selects "
                             v-for="(atribut, index) in atributes"
                           >
-                            <el-form-item
+                            <!-- <el-form-item
                               :prop="`at_${atribut.id}`"
                               class="mb-0"
                               :label="atribut.name.ru"
@@ -381,6 +381,71 @@
                                     name: atribut.name.ru,
                                     id: atribut.id,
                                   })
+                                "
+                              >
+                                <el-option
+                                  v-for="optionElement in atribut.options"
+                                  :key="optionElement.id"
+                                  :label="optionElement.name.ru"
+                                  :value="optionElement.id"
+                                >
+                                </el-option>
+                              </el-select>
+                            </el-form-item> -->
+                            <el-form-item :prop="`at_${atribut.id}`" class="mb-0">
+                              <div>
+                              <label>{{ atribut?.name.ru }}</label>
+                            </div>
+                              <el-select
+                                v-if="atribut?.name.ru == 'Цвет'"
+                                v-model="item.optionName[`at_${atribut.id}`]"
+                                class="w-100 color-options"
+                                :style="`background-color: ${
+                                  atribut.options.find(
+                                    (optionItem) =>
+                                      optionItem.id == item.optionName[`at_${atribut.id}`]
+                                  )?.name.ru
+                                };`"
+                                default-first-option
+                                popper-class="select-popper-hover"
+                                placeholder="Параметры"
+                                @change="
+                                  ($event) =>
+                                    atributOptions($event, {
+                                      productId: element.id,
+                                      variantId: item.id,
+                                      index: index,
+                                      color: true,
+                                      id: atribut.id,
+                                    })
+                                "
+                              >
+                                <el-option
+                                  class="color"
+                                  :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
+                                  v-for="optionElement in atribut.options"
+                                  :key="optionElement.id"
+                                  :label="optionElement.name.ru"
+                                  :value="optionElement.id"
+                                >
+                                </el-option>
+                              </el-select>
+                              <el-select
+                                v-else
+                                v-model="item.optionName[`at_${atribut.id}`]"
+                                class="w-100"
+                                default-first-option
+                                popper-class="select-popper-hover"
+                                placeholder="Параметры"
+                                @change="
+                                  ($event) =>
+                                    atributOptions($event, {
+                                      productId: element.id,
+                                      variantId: item.id,
+                                      index: index,
+                                      color: false,
+                                      id: atribut.id,
+                                    })
                                 "
                               >
                                 <el-option
@@ -1422,6 +1487,18 @@ export default {
         currentProduct.imagesData = [...fileList];
       }
     },
+    atributOptions(id, obj) {
+      const product = this.findProductWithId(obj.productId);
+      if (obj.color) {
+        product.variations = product.variations.map((item) => {
+          let elem = item;
+          return {
+            ...elem,
+            optionName: { ...item.optionName, [`at_${obj.id}`]: id },
+          };
+        });
+      }
+    },
     atributOptionsChange(obj) {
       const product = this.findProductWithId(obj.productId);
       product.variations.find((varId) => varId.id == obj.variantId).options[
@@ -1732,5 +1809,9 @@ export default {
 // }
 .product_list {
   transition: 0.2s;
+}
+.atribut_selects {
+  max-width: 120px;
+  min-width: 100px !important;
 }
 </style>

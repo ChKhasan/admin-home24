@@ -1016,6 +1016,7 @@ export default {
       productModal: {
         product_modal1: false,
       },
+      fetching: false,
       closeIcon: require("../../assets/svg/components/remove.svg?raw"),
       copyIcon: require("../../assets/svg/components/copy.svg?raw"),
       addIcon: require("../../assets/svg/components/add-icon.svg?raw"),
@@ -1389,6 +1390,7 @@ export default {
           ? this.$refs.ruleFormAtributes.length
           : 0;
         const atributValid = artibutReqiured.length == atr;
+        console.log(newData);
         if (valid && atributValid) {
           this.characterRequired
             ? this.__POST_PRODUCTS(newData)
@@ -1425,12 +1427,13 @@ export default {
       });
     },
     transformData() {
+  
       const newData = {
         ...this.ruleForm,
         products: this.ruleForm.products.map((item) => {
           const newVariation = item.variations.map((elem) => {
             return {
-              options: elem.options,
+              options: Object.values(elem.optionName),
               price: Number.parseFloat(elem.price).toFixed(2) * 1,
               is_default: elem.is_default,
               is_popular: elem.is_popular,
@@ -1813,5 +1816,8 @@ export default {
 .atribut_selects {
   max-width: 120px;
   min-width: 100px !important;
+}
+.atribut_selects .el-form-item__content {
+  line-height: 0 !important;
 }
 </style>

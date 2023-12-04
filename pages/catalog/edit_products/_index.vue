@@ -228,7 +228,7 @@
                             stroke-linejoin="round"
                           />
                         </svg>
-                      </div> 
+                      </div>
                     </div>
                     <div class="bottom_text">Установить статус продукта</div>
                   </div> -->
@@ -561,7 +561,7 @@
                       </div>
                       <div class="variant_btns mb-3">
                         <div
-                          v-if="item.indexId != product?.info?.id"
+                          v-if="item.indexId != product?.product?.id"
                           class="variant-btn variant-btn-delete mx-2"
                           @click="deleteValidation(element.id, item)"
                           v-html="removeIcon"

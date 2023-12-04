@@ -655,14 +655,14 @@ export default {
           disabled: false,
           show: this.checkShow("feedbacks"),
         },
-        {
-          name: "Топ меню",
-          index: "58",
-          to: "/contents/top-menu",
-          path: "contents-top-menu",
-          disabled: false,
-          show: this.checkShow("top-bars"),
-        },
+        // {
+        //   name: "Топ меню",
+        //   index: "58",
+        //   to: "/contents/top-menu",
+        //   path: "contents-top-menu",
+        //   disabled: false,
+        //   show: this.checkShow("top-bars"),
+        // },
       ],
       settings: [
         {
@@ -730,7 +730,7 @@ export default {
           disabled: false,
           show: this.checkShow("regions"),
         },
-       
+
         {
           name: "Филиалы",
           index: "70",
@@ -770,7 +770,7 @@ export default {
       const data = await this.$store.dispatch("fetchComments/getComments", {
         ...this.$route.query,
       });
- 
+
       this.comments = data?.comments;
     },
     checkShow(val) {

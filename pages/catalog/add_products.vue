@@ -2,7 +2,9 @@
   <div>
     <TitleBlock title="Продукты" :breadbrumb="['Каталог']" lastLink="Продукты">
       <div class="d-flex">
-        <div class="add-btn add-header-btn add-header-btn-padding btn-light-primary mx-3">
+        <div
+          class="add-btn add-header-btn add-header-btn-padding btn-light-primary mx-3"
+        >
           Отмена
         </div>
         <a-button
@@ -71,7 +73,9 @@
                 <div class="d-flex align-items-end">
                   <div class="form-block mb-0 w-100 required">
                     <div><label>Категория</label></div>
-                    <span class="bottom_text mt-0 mb-1">Добавить товар в категорию</span>
+                    <span class="bottom_text mt-0 mb-1"
+                      >Добавить товар в категорию</span
+                    >
                     <el-form-item prop="category_id">
                       <a-cascader
                         :options="cascaderCategories"
@@ -129,14 +133,17 @@
                             :options="editorOption"
                             :value="ruleForm.desc[item.key]"
                             v-model="ruleForm.desc[item.key]"
-                          /></div
-                      ></el-tab-pane>
+                          />
+                        </div>
+                      </el-tab-pane>
                       <el-tab-pane label="Характеристика" name="Character">
                         <div>
                           <h5 class="variant-img-title mb-4 mt-2">
                             Добавить характеристику
                           </h5>
-                          <a-button type="primary" @click="showModal('character')"
+                          <a-button
+                            type="primary"
+                            @click="showModal('character')"
                             >Редактировать характеристику
                           </a-button>
                         </div>
@@ -161,7 +168,9 @@
                   <div
                     class="form-block status-style"
                     :class="[
-                      ruleForm.is_active == 1 ? 'status-active' : 'status-inactive',
+                      ruleForm.is_active == 1
+                        ? 'status-active'
+                        : 'status-inactive',
                     ]"
                   >
                     <el-form-item label="Статус">
@@ -238,13 +247,18 @@
             <!-- Product right details -->
           </div>
           <!-- Product Variants -->
-          <transition-group name="el-zoom-in-top" tag="ul" v-if="atributes.length > 0">
+          <transition-group
+            name="el-zoom-in-top"
+            tag="ul"
+            v-if="atributes.length > 0"
+          >
             <div
               class="form-container product_list"
               v-for="element in ruleForm.products"
               :key="element.id"
               :class="{
-                'variant-modal': productModal[`product_modal${element.id}`] == true,
+                'variant-modal':
+                  productModal[`product_modal${element.id}`] == true,
               }"
             >
               <div class="d-flex justify-content-between variant-header">
@@ -305,7 +319,7 @@
                               :src="item?.response?.path"
                               alt=""
                             />
-                            <a-spin tip="Uploading..." v-else> </a-spin>
+                            <a-spin tip="Uploading..." v-else></a-spin>
                           </div>
                         </drag>
                       </template>
@@ -323,15 +337,25 @@
                     :showUploadList="false"
                     :file-list="element.imagesData"
                     @preview="handlePreview"
-                    @change="($event) => handleChangeVatiant($event, element.id)"
+                    @change="
+                      ($event) => handleChangeVatiant($event, element.id)
+                    "
                   >
                     <div v-if="fileList.length < 50">
                       <span v-html="addImgIcon"></span>
                       <div class="ant-upload-text">Добавить изображение</div>
                     </div>
                   </a-upload>
-                  <a-modal v-model="previewVisible" :footer="null" @cancel="handleCancel">
-                    <img alt="example" style="width: 100%" :src="previewImage" />
+                  <a-modal
+                    v-model="previewVisible"
+                    :footer="null"
+                    @cancel="handleCancel"
+                  >
+                    <img
+                      alt="example"
+                      style="width: 100%"
+                      :src="previewImage"
+                    />
                   </a-modal>
                 </div>
                 <p class="variant-img-text">
@@ -347,7 +371,10 @@
                     v-for="item in element.variations"
                     :key="item.id"
                   >
-                    <div class="product_variant_block" v-if="atributes.length > 0">
+                    <div
+                      class="product_variant_block"
+                      v-if="atributes.length > 0"
+                    >
                       <div class="variant-grid-4 w-100">
                         <el-form
                           label-position="top"
@@ -358,8 +385,29 @@
                           class="demo-ruleForm d-flex"
                           action=""
                         >
+                          <div class="d-flex flex-column w-100">
+                            <el-form-item
+                              prop="name"
+                              label="Имя "
+                              class="form-variant-block mb-0"
+                            >
+                              <el-input
+                                placeholder="Имя (UZ)"
+                                v-model="item.name.ru"
+                              />
+                            </el-form-item>
+                            <el-form-item
+                              prop="name"
+                              class="form-variant-block mb-0"
+                            >
+                              <el-input
+                                placeholder="Имя (RU)"
+                                v-model="item.name.uz"
+                              />
+                            </el-form-item>
+                          </div>
                           <div
-                            class="form-variant-block atribut_selects "
+                            class="form-variant-block atribut_selects"
                             v-for="(atribut, index) in atributes"
                           >
                             <!-- <el-form-item
@@ -392,10 +440,13 @@
                                 </el-option>
                               </el-select>
                             </el-form-item> -->
-                            <el-form-item :prop="`at_${atribut.id}`" class="mb-0">
+                            <el-form-item
+                              :prop="`at_${atribut.id}`"
+                              class="mb-0"
+                            >
                               <div>
-                              <label>{{ atribut?.name.ru }}</label>
-                            </div>
+                                <label>{{ atribut?.name.ru }}</label>
+                              </div>
                               <el-select
                                 v-if="atribut?.name.ru == 'Цвет'"
                                 v-model="item.optionName[`at_${atribut.id}`]"
@@ -403,7 +454,8 @@
                                 :style="`background-color: ${
                                   atribut.options.find(
                                     (optionItem) =>
-                                      optionItem.id == item.optionName[`at_${atribut.id}`]
+                                      optionItem.id ==
+                                      item.optionName[`at_${atribut.id}`]
                                   )?.name.ru
                                 };`"
                                 default-first-option
@@ -509,7 +561,11 @@
                             :filter-option="false"
                             @search="handleSearchPromo"
                           >
-                            <a-spin v-if="fetching" slot="notFoundContent" size="small" />
+                            <a-spin
+                              v-if="fetching"
+                              slot="notFoundContent"
+                              size="small"
+                            />
                             <a-select-option
                               v-for="d in promotionsData"
                               :key="d.id"
@@ -528,14 +584,16 @@
                                   <span>Популярные продукты</span>
                                 </template>
                                 <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
+                              </a-popover>
+                            </label>
                           </div>
                           <span>
                             <a-switch
                               @change="
                                 ($event) =>
-                                  $event ? (item.is_popular = 1) : (item.is_popular = 0)
+                                  $event
+                                    ? (item.is_popular = 1)
+                                    : (item.is_popular = 0)
                               "
                             />
                           </span>
@@ -549,8 +607,8 @@
                                   <span>Продукт дня</span>
                                 </template>
                                 <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
+                              </a-popover>
+                            </label>
                           </div>
                           <span>
                             <a-switch
@@ -572,8 +630,8 @@
                                   <span>Status</span>
                                 </template>
                                 <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
+                              </a-popover>
+                            </label>
                           </div>
                           <span>
                             <a-switch
@@ -606,8 +664,14 @@
                 </transition-group>
                 <!-- Validations -->
               </div>
-              <div class="d-flex justify-content-start" v-if="atributes.length > 0">
-                <div class="create-inner-variant" @click="addValidation(element.id)">
+              <div
+                class="d-flex justify-content-start"
+                v-if="atributes.length > 0"
+              >
+                <div
+                  class="create-inner-variant"
+                  @click="addValidation(element.id)"
+                >
                   <span v-html="addInnerValidatIcon"></span>
                   Добавит внутренний варизаци
                 </div>
@@ -645,7 +709,10 @@
       >
         <div class="form-block required">
           <el-form-item prop="name" label="Brand">
-            <el-input placeholder="Модель продукта" v-model="brandData.name"></el-input>
+            <el-input
+              placeholder="Модель продукта"
+              v-model="brandData.name"
+            ></el-input>
           </el-form-item>
         </div>
         <div class="clearfix variant-img">
@@ -662,7 +729,11 @@
               <div class="ant-upload-text">Добавить изображение</div>
             </div>
           </a-upload>
-          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+          <a-modal
+            :visible="previewVisible"
+            :footer="null"
+            @cancel="handleCancel"
+          >
             <img alt="example" style="width: 100%" :src="previewImage" />
           </a-modal>
         </div>
@@ -784,7 +855,10 @@
           </el-form-item>
         </div>
         <div class="form-block">
-          <el-form-item prop="group_characteristics" label="Характеристическая группа">
+          <el-form-item
+            prop="group_characteristics"
+            label="Характеристическая группа"
+          >
             <el-select
               class="w-100"
               v-model="ruleFormCategory.group_characteristics"
@@ -823,7 +897,11 @@
                 <div class="ant-upload-text">Добавить изображение</div>
               </div>
             </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+            <a-modal
+              :visible="previewVisible"
+              :footer="null"
+              @cancel="handleCancel"
+            >
               <img alt="example" style="width: 100%" :src="previewImage" />
             </a-modal>
           </div>
@@ -950,7 +1028,9 @@
                           <input
                             type="text"
                             v-model="
-                              variations.characteristicsValues[`char_${characters.id}`]
+                              variations.characteristicsValues[
+                                `char_${characters.id}`
+                              ]
                             "
                           />
                           <!-- <el-select
@@ -1005,6 +1085,7 @@ function getBase64(file) {
     reader.onerror = (error) => reject(error);
   });
 }
+
 export default {
   layout: "toolbar",
   mixins: [status],
@@ -1125,6 +1206,11 @@ export default {
                 product_of_the_day: 0,
                 status: "active",
                 promotions: [],
+                name: {
+                  ru: "",
+                  uz: "",
+                  en: "",
+                },
               },
             ],
           },
@@ -1240,8 +1326,10 @@ export default {
           (item) => item.id == this.lastCategory[2]
         );
         findCategory?.label && allCategories.push(findCategory?.label);
-        findChildCategory?.label && allCategories.push(findChildCategory?.label);
-        findChild2Category?.label && allCategories.push(findChild2Category?.label);
+        findChildCategory?.label &&
+          allCategories.push(findChildCategory?.label);
+        findChild2Category?.label &&
+          allCategories.push(findChild2Category?.label);
       }
       if (allCategories.length == 3) {
         return allCategories.join("/");
@@ -1276,7 +1364,9 @@ export default {
     },
     uploadDelete(id, imgId) {
       const product = this.findProductWithId(id);
-      product.imagesData = product.imagesData.filter((item) => item.uid != imgId);
+      product.imagesData = product.imagesData.filter(
+        (item) => item.uid != imgId
+      );
     },
     onInsert(event, id) {
       this.ruleForm.products
@@ -1284,7 +1374,9 @@ export default {
         .images.splice(event.index, 0, event.data);
     },
     getData() {
-      this.$refs["brandData"].validate((valid) => (valid ? this.__POST_BRAND() : false));
+      this.$refs["brandData"].validate((valid) =>
+        valid ? this.__POST_BRAND() : false
+      );
     },
     handleChangeBrand({ fileList }) {
       this.fileListBrand = fileList;
@@ -1394,7 +1486,11 @@ export default {
         if (valid && atributValid) {
           this.characterRequired
             ? this.__POST_PRODUCTS(newData)
-            : this.notification("Success", "Вы не добавили характеристику", "error");
+            : this.notification(
+                "Success",
+                "Вы не добавили характеристику",
+                "error"
+              );
         } else {
           return false;
         }
@@ -1407,10 +1503,12 @@ export default {
     filter(inputValue, path) {
       return (
         path.some(
-          (option) => option.label.toUpperCase().indexOf(inputValue.toUpperCase()) > -1
+          (option) =>
+            option.label.toUpperCase().indexOf(inputValue.toUpperCase()) > -1
         ) ||
         path.some(
-          (option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+          (option) =>
+            option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
         )
       );
     },
@@ -1427,7 +1525,6 @@ export default {
       });
     },
     transformData() {
-  
       const newData = {
         ...this.ruleForm,
         products: this.ruleForm.products.map((item) => {
@@ -1448,6 +1545,7 @@ export default {
               ),
               status: elem.status,
               promotions: elem.promotions,
+              name: elem.name,
             };
           });
           return {
@@ -1480,7 +1578,8 @@ export default {
       this.$refs.characterScrollItems.forEach((item) => {
         item.scrollLeft = this.$refs.productScroll.scrollLeft;
       });
-      this.$refs.characterScroll.scrollLeft = this.$refs.productScroll.scrollLeft;
+      this.$refs.characterScroll.scrollLeft =
+        this.$refs.productScroll.scrollLeft;
     },
 
     async handleChangeVatiant({ fileList }, id) {
@@ -1506,9 +1605,9 @@ export default {
       const product = this.findProductWithId(obj.productId);
       product.variations.find((varId) => varId.id == obj.variantId).options[
         obj.index
-      ] = product.variations.find((varId) => varId.id == obj.variantId).optionName[
-        `at_${obj.id}`
-      ];
+      ] = product.variations.find(
+        (varId) => varId.id == obj.variantId
+      ).optionName[`at_${obj.id}`];
     },
     handleCancel() {
       this.previewVisible = false;
@@ -1536,6 +1635,11 @@ export default {
         optionName: options,
         status: "active",
         promotions: [],
+        name: {
+          ru: "",
+          uz: "",
+          en: "",
+        },
       });
     },
     deleteProduct(variantId) {
@@ -1548,9 +1652,13 @@ export default {
     deleteValidation(variantId, innerVarId) {
       const product = this.findProductWithId(variantId);
       if (product.variations.length > 1) {
-        product.variations = product.variations.filter((item) => item.id != innerVarId);
+        product.variations = product.variations.filter(
+          (item) => item.id != innerVarId
+        );
       }
-      const checkDefault = product.variations.filter((item) => item.is_default == 1);
+      const checkDefault = product.variations.filter(
+        (item) => item.is_default == 1
+      );
       if (checkDefault.length == 0) {
         product.variations[0].is_default = 1;
       }
@@ -1576,6 +1684,11 @@ export default {
           characteristicsValues: {},
           status: "active",
           promotions: [],
+          name: {
+            ru: "",
+            uz: "",
+            en: "",
+          },
         },
       ];
       this.ruleForm.products.push({
@@ -1625,7 +1738,9 @@ export default {
         return categories.map((category) => {
           const label = category.name.ru;
           const children =
-            category.children.length > 0 ? mapCategories(category.children) : undefined;
+            category.children.length > 0
+              ? mapCategories(category.children)
+              : undefined;
           const { children: _, ...rest } = category;
           if (category.children.length == 0) {
             return {
@@ -1643,7 +1758,9 @@ export default {
       };
 
       this.cascaderCategories = mapCategories(this.categories);
-      this.cascaderCategories = this.cascaderCategories.filter((item) => item.children);
+      this.cascaderCategories = this.cascaderCategories.filter(
+        (item) => item.children
+      );
 
       this.categoriesWidthChild.unshift({
         name: { ru: "Главная категория" },
@@ -1662,7 +1779,10 @@ export default {
       });
     },
     async __GET_CATEGORY_BY_ID(id) {
-      const data = await this.$store.dispatch("fetchCategories/getCategoriesById", id);
+      const data = await this.$store.dispatch(
+        "fetchCategories/getCategoriesById",
+        id
+      );
       const category = data.category;
       this.atributes = category.attributes;
       this.character_group = category.characteristic_groups;
@@ -1739,12 +1859,14 @@ export default {
   border: 1px dashed #d9d9d9;
   border-radius: 4px;
   position: relative;
+
   &:hover {
     .upload_actions {
       z-index: 10;
       opacity: 1;
     }
   }
+
   .upload_actions {
     width: 101px;
     height: 101px;
@@ -1758,11 +1880,13 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
     span {
       padding: 5px;
       cursor: pointer;
     }
   }
+
   img {
     width: 100%;
     height: 100%;
@@ -1772,29 +1896,36 @@ export default {
     transition: 0.2s !important;
   }
 }
+
 .list > div {
   display: flex;
   flex-wrap: wrap;
 }
+
 .list2 {
   display: flex;
   flex-wrap: wrap;
+
   .ant-upload-picture-card-wrapper {
     width: 119px;
   }
 }
+
 .item-upload {
   display: flex;
   flex-wrap: wrap;
 }
+
 .flip-list2-move {
   transition: transform 0.2s;
 }
+
 .over {
   opacity: 0.6;
   transition: transform 0.2s !important;
   transition: 0.2s !important;
 }
+
 // .variant-modal {
 //   &::-webkit-scrollbar {
 //     display: none;
@@ -1813,10 +1944,12 @@ export default {
 .product_list {
   transition: 0.2s;
 }
+
 .atribut_selects {
   max-width: 120px;
   min-width: 100px !important;
 }
+
 .atribut_selects .el-form-item__content {
   line-height: 0 !important;
 }

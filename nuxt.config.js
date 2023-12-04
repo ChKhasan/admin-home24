@@ -34,7 +34,6 @@ export default {
     { src: "~/plugins/chart.js", mode: "client" },
     { src: "~plugins/v-mask.js", ssr: false },
     { src: "~plugins/apex-chart.js", ssr: false },
-    "~/plugins/errorHandling.js",
   ],
 
   axios: {
@@ -61,7 +60,7 @@ export default {
     analyze: true,
   },
   loadingIndicator: {
-    name: "chasing-dots",
+    name: "folding-cube",
     color: "#1890ff",
     background: "white",
   },

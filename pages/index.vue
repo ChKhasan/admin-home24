@@ -1,11 +1,11 @@
-<template>
-  <div></div>
+<template lang="html">
+  <div class="page">
+
+  </div>
 </template>
 
 <script>
 export default {
-  asyncData({ redirect }) {
-    redirect("/catalog/products");
-  },
 };
 </script>
+<style lang="css" scoped></style>

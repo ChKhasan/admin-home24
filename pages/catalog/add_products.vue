@@ -240,9 +240,9 @@
                   </div>
                 </el-form>
               </div>
-              <div class="form-container">
-                <ProductsStatistic />
-              </div>
+<!--              <div class="form-container">-->
+<!--                <ProductsStatistic />-->
+<!--              </div>-->
             </div>
             <!-- Product right details -->
           </div>
@@ -1068,7 +1068,7 @@
 </template>
 <script>
 import TitleBlock from "../../components/Title-block.vue";
-import ProductsStatistic from "../../components/products/Products-statistic.vue";
+// import ProductsStatistic from "../../components/products/Products-statistic.vue";
 import ProductCharacterList from "../../components/products/Product-character-list.vue";
 import CommentCard from "../../components/products/CommentCard.vue";
 import "quill/dist/quill.core.css";
@@ -1835,7 +1835,7 @@ export default {
     },
   },
   components: {
-    ProductsStatistic,
+    // ProductsStatistic,
     ProductCharacterList,
     CommentCard,
     TitleBlock,

@@ -975,9 +975,9 @@
                   />
                 </div>
                 <div class="ch-product-body">
-                  <span class="ch-product-info"> Пурпурные </span>
-                  <span class="ch-product-info"> dual SIM 265 gb </span>
-                  <span class="ch-product-info"> 17 100 000 сум LL A </span>
+                  <span class="ch-product-info"> {{ variations?.name?.ru }} </span>
+                  <!-- <span class="ch-product-info"> dual SIM 265 gb </span> -->
+                  <span class="ch-product-info"> {{ `${variations?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ") }} so'm </span>
                 </div>
               </div>
             </span>
@@ -1738,11 +1738,11 @@ export default {
         return categories.map((category) => {
           const label = category.name.ru;
           const children =
-            category.children.length > 0
-              ? mapCategories(category.children)
+            category.children?.length > 0
+              ? mapCategories(category?.children)
               : undefined;
           const { children: _, ...rest } = category;
-          if (category.children.length == 0) {
+          if (category.children?.length == 0) {
             return {
               ...rest,
               label,
@@ -1761,7 +1761,7 @@ export default {
       this.cascaderCategories = this.cascaderCategories.filter(
         (item) => item.children
       );
-
+console.log(this.cascaderCategories);
       this.categoriesWidthChild.unshift({
         name: { ru: "Главная категория" },
         id: null,
@@ -1952,5 +1952,10 @@ export default {
 
 .atribut_selects .el-form-item__content {
   line-height: 0 !important;
+}
+.color-options input {
+  background-color: transparent !important;
+  color: transparent !important;
+  // border: none !important;
 }
 </style>

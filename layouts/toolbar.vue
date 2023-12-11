@@ -57,11 +57,7 @@
                 </nuxt-link>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu
-              index="9"
-              class="home_menu"
-              v-if="checkShow('dashboard')"
-            >
+            <el-submenu index="9" class="home_menu" v-if="checkShow('dashboard')">
               <div slot="title">
                 <span class="menu-icon" v-html="icons.dashboardIcon"></span>
                 <p>Dashboard</p>
@@ -730,15 +726,6 @@ export default {
           disabled: false,
           show: this.checkShow("regions"),
         },
-
-        {
-          name: "Филиалы",
-          index: "70",
-          to: "/settings/locations",
-          path: "settings-locations",
-          disabled: false,
-          show: this.checkShow("branches"),
-        },
       ],
     };
     await Promise.all([this.$store.dispatch("getShowCasesStore")]);
@@ -762,7 +749,6 @@ export default {
     this.handleClose();
     this.activeOpens();
     this.checkToolbar(this.$route.path);
-
   },
 
   methods: {
@@ -790,8 +776,7 @@ export default {
         this.statusFunc(e);
       }
     },
-    takeChange(e) {
-    },
+    takeChange(e) {},
     handleCommand(command) {
       switch (command) {
         case "logout":

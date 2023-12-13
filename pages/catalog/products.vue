@@ -78,7 +78,8 @@
           :page-size="params.pageSize"
           align="center"
         >
-          <span slot="key" slot-scope="text">#{{ text }}</span>
+          <!-- <span slot="key" slot-scope="text">#{{ text }}</span> -->
+          <span slot="indexId" slot-scope="text">#{{ text }}</span>
           <span slot="img" slot-scope="text">
             <img v-if="text" class="table-image" :src="text" alt="text" />
             <img
@@ -257,12 +258,16 @@ export default {
       });
       this.totalPage = this.products.products?.total;
       this.loading = false;
-      console.log(this.products);
-      this.data = this.products.products.data.map((item) => {
+      const pageIndex = this.indexPage(
+        this.products.products?.current_page,
+        this.products.products?.per_page
+      );
+      this.data = this.products.products.data.map((item, index) => {
         if (item.info.products[0]?.images.length > 0) {
           return {
             ...item,
             key: item.id,
+            indexId: pageIndex + index,
             price: item.price,
             model: item.model,
             name: {
@@ -288,6 +293,9 @@ export default {
           };
         }
       });
+    },
+    indexPage(current_page, per_page) {
+      return (current_page * 1 - 1) * per_page + 1;
     },
     deletePoduct(id) {
       this.__DELETE_GLOBAL(

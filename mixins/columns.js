@@ -157,14 +157,15 @@ export default {
       ],
       columnProduct: [
         {
-          title: "ID",
-          dataIndex: "key",
-          key: "key",
+          title: "№",
+          dataIndex: "indexId",
+          key: "indexId",
           slots: { title: "customTitle" },
-          scopedSlots: { customRender: "key" },
+          scopedSlots: { customRender: "indexId" },
           className: "column-name",
-          width: "100px",
+          width: "60px",
         },
+        
         {
           title: "ПРОДУКТ",
           dataIndex: "img",

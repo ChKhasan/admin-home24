@@ -245,7 +245,7 @@
             <div
               class="form-container product_list"
               v-for="(element, elementIndex) in ruleForm.products"
-              :key="elementIndex"
+              :key="element.id"
               :class="{
                 'variant-modal': productModal[`product_modal${element.id}`] == true,
               }"
@@ -346,11 +346,11 @@
               </div>
               <div>
                 <!-- Validations -->
-                <transition-group name="el-zoom-in-top" tag="ul">
+                <!-- <transition-group name="el-zoom-in-top" tag="ul"> -->
                   <div
                     class="product-variant"
                     v-for="(item, itemIndex) in element.variations"
-                    :key="itemIndex"
+                    :key="item.id"
                   >
                     <div class="product_variant_block">
                       <div class="variant-grid-4 w-100">
@@ -574,7 +574,7 @@
                       </div>
                     </div>
                   </div>
-                </transition-group>
+                <!-- </transition-group> -->
                 <!-- Validations -->
               </div>
               <div class="d-flex justify-content-start" v-if="atributes.length > 0">

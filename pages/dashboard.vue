@@ -186,7 +186,8 @@
             <!-- <div class="product-item" v-for="product in dashboadData?.top_sales_products"> -->
             <div
               class="product-item"
-              v-for="product in dashboadData?.top_sales_products?.slice(0, 10)"
+              v-for="(product, index) in dashboadData?.top_sales_products?.slice(0, 10)"
+              :key="index"
             >
               <div class="image">
                 <img

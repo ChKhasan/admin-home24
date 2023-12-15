@@ -4,7 +4,7 @@
       <h1>{{ title }}</h1>
       <span class="vertical_hr"></span>
       <ul class="d-flex">
-        <li v-for="item in breadbrumb">
+        <li v-for="(item, index) in breadbrumb" :key="index">
           {{ item }}
           <span class="list-bullet-box">
             <span class="list-bullet"></span>

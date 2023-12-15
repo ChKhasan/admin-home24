@@ -57,49 +57,14 @@ export default {
   ],
   ssr: false,
   build: {
-    analyze: true,
+    // analyze: true,
   },
   loadingIndicator: {
     name: "folding-cube",
     color: "#1890ff",
     background: "white",
   },
-  // auth: {
-  //   strategies: {
-  //     local: {
-  //       scheme: "refresh",
-  //       token: {
-  //         property: "access",
-  //         maxAge: 60 * 60 * 2,
-  //       },
-  //       refreshToken: {
-  //         property: "refresh",
-  //         data: "refresh",
-  //         maxAge: 60 * 60 * 24,
-  //       },
-  //       user: {
-  //         property: false,
-  //       },
-  //       endpoints: {
-  //         login: {
-  //           url: "/api/account/login",
-  //           method: "post",
-  //           propertyName: "access",
-  //         },
-  //         refresh: { url: "/api/auth/refresh", method: "post" },
-  //         logout: { url: "/api/account/logout", method: "post" },
-  //         user: false,
-  //       },
-  //     },
-  //   },
-  //   redirect: {
-  //     login: "/admin/login",
-  //     logout: "/admin/login",
-  //     callback: "/admin/login",
-  //     home: "/catalog/products",
-  //   },
-  //   watchLoggedIn: true,
-  // },
+
   nuxtPrecompress: {
     enabled: true, // Enable in production
     report: false, // set true to turn one console messages during module init

@@ -42,7 +42,7 @@
             </a>
             <div slot="options" slot-scope="text" align="center" class="option-container">
               <!-- <span v-for="item in text" class="option-items">{{ item }}</span> -->
-              <span class="option-items" v-for="item in text">{{
+              <span class="option-items" v-for="(item,index) in text" :key="index">{{
                 item?.name?.ru ? item?.name?.ru : "-----"
               }}</span>
             </div>

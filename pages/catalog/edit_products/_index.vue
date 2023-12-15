@@ -82,7 +82,7 @@
                         :options="cascaderCategories"
                         :show-search="{ filter }"
                         popupClassName="category-cascader"
-                        class="category-select w-100 disabledBtn"
+                        class="category-select w-100"
                         popper-class="select-popper-hover"
                         v-model="cascader"
                         placeholder="Выберите категорию"

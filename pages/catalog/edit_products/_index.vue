@@ -347,233 +347,242 @@
               <div>
                 <!-- Validations -->
                 <!-- <transition-group name="el-zoom-in-top" tag="ul"> -->
-                  <div
-                    class="product-variant"
-                    v-for="(item, itemIndex) in element.variations"
-                    :key="item.id"
-                  >
-                    <div class="product_variant_block">
-                      <div class="variant-grid-4 w-100">
-                        <el-form
-                          label-position="top"
-                          :model="item.optionName"
-                          :rules="rulesAtributes"
-                          ref="ruleFormAtributes"
-                          label-width="120px"
-                          class="demo-ruleForm d-flex"
-                          action=""
-                        >
-                          <div class="d-flex flex-column w-100">
-                            <el-form-item
-                              prop="name"
-                              label="Имя "
-                              class="form-variant-block mb-0"
-                            >
-                              <el-input placeholder="Имя (UZ)" v-model="item.name.ru" />
-                            </el-form-item>
-                            <el-form-item prop="name" class="form-variant-block mb-0">
-                              <el-input placeholder="Имя (RU)" v-model="item.name.uz" />
-                            </el-form-item>
-                          </div>
-
-                          <div
-                            v-if="atributes.length > 0"
-                            class="form-variant-block atribut_selects"
-                            v-for="(atribut, index) in atributes"
-                            :key="index"
+                <div
+                  class="product-variant"
+                  v-for="(item, itemIndex) in element.variations"
+                  :key="item.id"
+                >
+                  <div class="product_variant_block">
+                    <div class="variant-grid-4 w-100">
+                      <el-form
+                        label-position="top"
+                        :model="item.optionName"
+                        :rules="rulesAtributes"
+                        ref="ruleFormAtributes"
+                        label-width="120px"
+                        class="demo-ruleForm d-flex"
+                        action=""
+                      >
+                        <div class="d-flex flex-column w-100">
+                          <el-form-item
+                            prop="name"
+                            label="Имя "
+                            class="form-variant-block mb-0"
                           >
-                            <div>
-                              <label>{{ atribut?.name.ru }}</label>
-                            </div>
-                            <el-form-item :prop="`at_${atribut.id}`" class="mb-0">
-                              <el-select
-                                v-if="atribut?.name.ru == 'Цвет'"
-                                v-model="item.optionName[`at_${atribut.id}`]"
-                                class="w-100 color-options"
-                                :style="`background-color: ${
-                                  atribut.options.find(
-                                    (optionItem) =>
-                                      optionItem.id == item.optionName[`at_${atribut.id}`]
-                                  )?.name.ru
-                                };`"
-                                default-first-option
-                                popper-class="select-popper-hover"
-                                placeholder="Параметры"
-                                @change="
-                                  ($event) =>
-                                    atributOptions($event, {
-                                      productId: element.id,
-                                      variantId: item.id,
-                                      index: index,
-                                      color: true,
-                                      id: atribut.id,
-                                    })
-                                "
-                              >
-                                <el-option
-                                  class="color"
-                                  :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
-                                  v-for="optionElement in atribut.options"
-                                  :key="optionElement.id"
-                                  :label="optionElement.name.ru"
-                                  :value="optionElement.id"
-                                >
-                                </el-option>
-                              </el-select>
-                              <el-select
-                                v-else
-                                v-model="item.optionName[`at_${atribut.id}`]"
-                                class="w-100"
-                                default-first-option
-                                popper-class="select-popper-hover"
-                                placeholder="Параметры"
-                                @change="
-                                  ($event) =>
-                                    atributOptions($event, {
-                                      productId: element.id,
-                                      variantId: item.id,
-                                      index: index,
-                                      color: false,
-                                      id: atribut.id,
-                                    })
-                                "
-                              >
-                                <el-option
-                                  v-for="optionElement in atribut.options"
-                                  :key="optionElement.id"
-                                  :label="optionElement.name.ru"
-                                  :value="optionElement.id"
-                                >
-                                </el-option>
-                              </el-select>
-                            </el-form-item>
-                          </div>
-                        </el-form>
+                            <el-input placeholder="Имя (UZ)" v-model="item.name.ru" />
+                          </el-form-item>
+                          <el-form-item prop="name" class="form-variant-block mb-0">
+                            <el-input placeholder="Имя (RU)" v-model="item.name.uz" />
+                          </el-form-item>
+                        </div>
 
-                        <div class="form-variant-block atribut_selects mb-0">
-                          <div><label>Цена</label></div>
-                          <el-input
-                            v-model="item.price"
-                            placeholder="Price"
-                            type="number"
-                          ></el-input>
-                        </div>
-                        <el-form-item
-                          prop="attributes"
-                          label="Aкции "
-                          class="form-variant-block form-block mb-0"
-                        >
-                          <a-select
-                            show-search
-                            ref="searchProductSelect"
-                            mode="multiple"
-                            v-model="item.promotions"
-                            placeholder="Aкции..."
-                            style="width: 100%"
-                            :default-active-first-option="false"
-                            :show-arrow="false"
-                            :filter-option="false"
-                            @search="handleSearchPromo"
-                          >
-                            <a-spin v-if="fetching" slot="notFoundContent" size="small" />
-                            <a-select-option
-                              v-for="d in promotionsData"
-                              :key="d.id"
-                              :value="d?.id"
-                            >
-                              {{ d?.short_name?.ru }}
-                            </a-select-option>
-                          </a-select>
-                        </el-form-item>
-
-                        <div class="form-block mb-0">
-                          <div>
-                            <label
-                              >Pop
-                              <a-popover placement="top">
-                                <template slot="content">
-                                  <span>Популярные продукты</span>
-                                </template>
-
-                                <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
-                          </div>
-                          <span>
-                            <a-switch
-                              :checked="item.is_popular == 1"
-                              @change="
-                                ($event) =>
-                                  $event ? (item.is_popular = 1) : (item.is_popular = 0)
-                              "
-                            />
-                          </span>
-                        </div>
-                        <div class="form-block mx-2 mb-0">
-                          <div>
-                            <label
-                              >POD
-                              <a-popover placement="top">
-                                <template slot="content">
-                                  <span>Продукт дня</span>
-                                </template>
-                                <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
-                          </div>
-                          <span>
-                            <a-switch
-                              :checked="item.product_of_the_day == 1"
-                              @change="
-                                ($event) =>
-                                  $event
-                                    ? (item.product_of_the_day = 1)
-                                    : (item.product_of_the_day = 0)
-                              "
-                            />
-                          </span>
-                        </div>
-                        <div class="form-block mb-0">
-                          <div>
-                            <label
-                              >Status
-                              <a-popover placement="top">
-                                <template slot="content">
-                                  <span>Status {{ item.status }} </span>
-                                </template>
-                                <span class="nav-info">?</span>
-                              </a-popover></label
-                            >
-                          </div>
-                          <span>
-                            <a-switch
-                              :checked="item.status == 'active'"
-                              @change="
-                                ($event) =>
-                                  $event
-                                    ? (item.status = 'active')
-                                    : (item.status = 'inactive')
-                              "
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div class="variant_btns mb-3">
                         <div
-                          v-if="item.indexId != product?.product?.id"
-                          class="variant-btn variant-btn-delete mx-2"
-                          @click="deleteValidation(element.id, item)"
-                          v-html="removeIcon"
-                        ></div>
-                        <!-- <div
+                          v-if="atributes.length > 0"
+                          class="form-variant-block atribut_selects"
+                          v-for="(atribut, index) in atributes"
+                          :key="index"
+                        >
+                          <div>
+                            <label>{{ atribut?.name.ru }}</label>
+                          </div>
+                          <el-form-item :prop="`at_${atribut.id}`" class="mb-0">
+                            <el-select
+                              v-if="atribut?.name.ru == 'Цвет'"
+                              v-model="item.optionName[`at_${atribut.id}`]"
+                              class="w-100 color-options"
+                              :style="`background-color: ${
+                                atribut.options.find(
+                                  (optionItem) =>
+                                    optionItem.id == item.optionName[`at_${atribut.id}`]
+                                )?.name.ru
+                              };`"
+                              default-first-option
+                              popper-class="select-popper-hover"
+                              placeholder="Параметры"
+                              @change="
+                                ($event) =>
+                                  atributOptions($event, {
+                                    productId: element.id,
+                                    variantId: item.id,
+                                    index: index,
+                                    color: true,
+                                    id: atribut.id,
+                                  })
+                              "
+                            >
+                              <el-option
+                                class="color"
+                                :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
+                                v-for="optionElement in atribut.options"
+                                :key="optionElement.id"
+                                :label="optionElement.name.ru"
+                                :value="optionElement.id"
+                              >
+                              </el-option>
+                            </el-select>
+                            <el-select
+                              v-else
+                              v-model="item.optionName[`at_${atribut.id}`]"
+                              class="w-100"
+                              default-first-option
+                              popper-class="select-popper-hover"
+                              placeholder="Параметры"
+                              @change="
+                                ($event) =>
+                                  atributOptions($event, {
+                                    productId: element.id,
+                                    variantId: item.id,
+                                    index: index,
+                                    color: false,
+                                    id: atribut.id,
+                                  })
+                              "
+                            >
+                              <el-option
+                              :disabled="
+                                    Boolean(
+                                      element.variations.find((optionItem) =>
+                                        Object.values(optionItem.optionName).includes(
+                                          optionElement.id
+                                        )
+                                      )
+                                    )
+                                  "
+                                v-for="optionElement in atribut.options"
+                                :key="optionElement.id"
+                                :label="optionElement.name.ru"
+                                :value="optionElement.id"
+                              >
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                        </div>
+                      </el-form>
+
+                      <div class="form-variant-block atribut_selects mb-0">
+                        <div><label>Цена</label></div>
+                        <el-input
+                          v-model="item.price"
+                          placeholder="Price"
+                          type="number"
+                        ></el-input>
+                      </div>
+                      <el-form-item
+                        prop="attributes"
+                        label="Aкции "
+                        class="form-variant-block form-block mb-0"
+                      >
+                        <a-select
+                          show-search
+                          ref="searchProductSelect"
+                          mode="multiple"
+                          v-model="item.promotions"
+                          placeholder="Aкции..."
+                          style="width: 100%"
+                          :default-active-first-option="false"
+                          :show-arrow="false"
+                          :filter-option="false"
+                          @search="handleSearchPromo"
+                        >
+                          <a-spin v-if="fetching" slot="notFoundContent" size="small" />
+                          <a-select-option
+                            v-for="d in promotionsData"
+                            :key="d.id"
+                            :value="d?.id"
+                          >
+                            {{ d?.short_name?.ru }}
+                          </a-select-option>
+                        </a-select>
+                      </el-form-item>
+
+                      <div class="form-block mb-0">
+                        <div>
+                          <label
+                            >Pop
+                            <a-popover placement="top">
+                              <template slot="content">
+                                <span>Популярные продукты</span>
+                              </template>
+
+                              <span class="nav-info">?</span>
+                            </a-popover></label
+                          >
+                        </div>
+                        <span>
+                          <a-switch
+                            :checked="item.is_popular == 1"
+                            @change="
+                              ($event) =>
+                                $event ? (item.is_popular = 1) : (item.is_popular = 0)
+                            "
+                          />
+                        </span>
+                      </div>
+                      <div class="form-block mx-2 mb-0">
+                        <div>
+                          <label
+                            >POD
+                            <a-popover placement="top">
+                              <template slot="content">
+                                <span>Продукт дня</span>
+                              </template>
+                              <span class="nav-info">?</span>
+                            </a-popover></label
+                          >
+                        </div>
+                        <span>
+                          <a-switch
+                            :checked="item.product_of_the_day == 1"
+                            @change="
+                              ($event) =>
+                                $event
+                                  ? (item.product_of_the_day = 1)
+                                  : (item.product_of_the_day = 0)
+                            "
+                          />
+                        </span>
+                      </div>
+                      <div class="form-block mb-0">
+                        <div>
+                          <label
+                            >Status
+                            <a-popover placement="top">
+                              <template slot="content">
+                                <span>Status {{ item.status }} </span>
+                              </template>
+                              <span class="nav-info">?</span>
+                            </a-popover></label
+                          >
+                        </div>
+                        <span>
+                          <a-switch
+                            :checked="item.status == 'active'"
+                            @change="
+                              ($event) =>
+                                $event
+                                  ? (item.status = 'active')
+                                  : (item.status = 'inactive')
+                            "
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    <div class="variant_btns mb-3">
+                      <div
+                        v-if="item.indexId != product?.product?.id"
+                        class="variant-btn variant-btn-delete mx-2"
+                        @click="deleteValidation(element.id, item)"
+                        v-html="removeIcon"
+                      ></div>
+                      <!-- <div
                           class="variant-btn variant-btn-check"
                           @click="onChangeVariants(element.id, item.id)"
                         >
                           <a-radio :checked="item.is_default == 1"></a-radio>
                         </div> -->
-                      </div>
                     </div>
                   </div>
+                </div>
                 <!-- </transition-group> -->
                 <!-- Validations -->
               </div>
@@ -880,7 +889,12 @@
                 <div class="ch-product-body">
                   <span class="ch-product-info"> {{ variations?.name?.ru }} </span>
                   <!-- <span class="ch-product-info"> dual SIM 265 gb </span> -->
-                  <span class="ch-product-info"> {{ `${variations?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ") }} so'm </span>
+                  <span class="ch-product-info">
+                    {{
+                      `${variations?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                    }}
+                    so'm
+                  </span>
                 </div>
               </div>
             </span>
@@ -1647,6 +1661,7 @@ export default {
     transformData() {
       const newData = {
         ...this.ruleForm,
+        // category_id: this.cascader.at(-1),
         products: this.ruleForm.products.map((item) => {
           const newVariation = item.variations.map((elem) => {
             return {

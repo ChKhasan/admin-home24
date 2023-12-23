@@ -408,7 +408,7 @@
                             </el-form-item> -->
                             <el-form-item :prop="`at_${atribut.id}`" class="mb-0">
                               <div>
-                                <label>{{ atribut?.name.ru }}</label>
+                                <label>{{ atribut?.name.ru }} </label>
                               </div>
                               <el-select
                                 v-if="atribut?.name.ru == 'Цвет'"
@@ -450,7 +450,7 @@
                                 class="w-100"
                                 default-first-option
                                 popper-class="select-popper-hover"
-                                placeholder="Параметры"
+                                :placeholder="`Параметры`"
                                 @change="
                                   ($event) =>
                                     atributOptions($event, {
@@ -463,6 +463,15 @@
                                 "
                               >
                                 <el-option
+                                  :disabled="
+                                    Boolean(
+                                      element.variations.find((optionItem) =>
+                                        Object.values(optionItem.optionName).includes(
+                                          optionElement.id
+                                        )
+                                      )
+                                    )
+                                  "
                                   v-for="optionElement in atribut.options"
                                   :key="optionElement.id"
                                   :label="optionElement.name.ru"

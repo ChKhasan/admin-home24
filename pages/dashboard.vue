@@ -178,7 +178,7 @@
             </div>
           </section>
         </div>
-        <div class="card_block py-5">
+        <div class="card_block py-5 top-products">
           <div class="title-products pt-4">
             <FormTitle title="Топ товаров" />
           </div>
@@ -450,6 +450,9 @@ export default {
 </script>
 
 <style scoped>
+.top-products {
+  min-height: 900px;
+}
 .product-list {
   display: flex;
   gap: 16px;

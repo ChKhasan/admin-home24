@@ -439,15 +439,15 @@
                               "
                             >
                               <el-option
-                              :disabled="
-                                    Boolean(
-                                      element.variations.find((optionItem) =>
-                                        Object.values(optionItem.optionName).includes(
-                                          optionElement.id
-                                        )
+                                :disabled="
+                                  Boolean(
+                                    element.variations.find((optionItem) =>
+                                      Object.values(optionItem.optionName).includes(
+                                        optionElement.id
                                       )
                                     )
-                                  "
+                                  )
+                                "
                                 v-for="optionElement in atribut.options"
                                 :key="optionElement.id"
                                 :label="optionElement.name.ru"
@@ -463,7 +463,15 @@
                         <div><label>Цена</label></div>
                         <el-input
                           v-model="item.price"
-                          placeholder="Price"
+                          placeholder="999 999 999"
+                          type="number"
+                        ></el-input>
+                      </div>
+                      <div class="form-variant-block">
+                        <div><label>Количество</label></div>
+                        <el-input
+                          v-model="item.stock"
+                          placeholder="Количество"
                           type="number"
                         ></el-input>
                       </div>
@@ -890,9 +898,7 @@
                   <span class="ch-product-info"> {{ variations?.name?.ru }} </span>
                   <!-- <span class="ch-product-info"> dual SIM 265 gb </span> -->
                   <span class="ch-product-info">
-                    {{
-                      `${variations?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-                    }}
+                    {{ `${variations?.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ") }}
                     so'm
                   </span>
                 </div>
@@ -1203,6 +1209,7 @@ export default {
             variations: [
               {
                 id: 1,
+                stock: 1,
                 indexId: 0,
                 options: [],
                 optionName: {},
@@ -1403,6 +1410,7 @@ export default {
           {
             name: seartProduct.info.name,
             id: 1,
+            stock: 1,
             indexId: seartProduct.id,
             options: [1],
             price: seartProduct.price,
@@ -1438,6 +1446,7 @@ export default {
         let seartProduct = this.searchProducts.find((elem) => elem.id == item);
         product.variations.push({
           id: product.variations.at(-1).id + 1,
+          stock: 1,
           indexId: seartProduct.id,
           options: [1],
           price: seartProduct.price,
@@ -1666,6 +1675,7 @@ export default {
           const newVariation = item.variations.map((elem) => {
             return {
               id: elem.indexId,
+              stock: elem.stock,
               options: Object.values(elem.optionName),
               price: Number.parseFloat(elem.price).toFixed(2) * 1,
               is_default: elem.is_default,
@@ -1761,6 +1771,7 @@ export default {
       };
       product.variations.push({
         id: product.variations.at(-1).id + 1,
+        stock: 1,
         indexId: 0,
         options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
           ? [this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id]
@@ -1826,6 +1837,7 @@ export default {
       const newVariations = [
         {
           id: 1,
+          stock: 1,
           indexId: 0,
           options: [1],
           price: 0,
@@ -2028,6 +2040,7 @@ export default {
           return {
             name: variant.name,
             id: index + 1,
+            stock: variant.stock,
             constProduct: true,
             indexId: variant.id,
             options: [...options],

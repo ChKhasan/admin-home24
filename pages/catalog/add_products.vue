@@ -484,10 +484,18 @@
                         </el-form>
 
                         <div class="form-variant-block">
-                          <div><label>Price</label></div>
+                          <div><label>Цена</label></div>
                           <el-input
                             v-model="item.price"
-                            placeholder="Price"
+                            placeholder="999 999 999"
+                            type="number"
+                          ></el-input>
+                        </div>
+                        <div class="form-variant-block">
+                          <div><label>Количество</label></div>
+                          <el-input
+                            v-model="item.stock"
+                            placeholder="Количество"
                             type="number"
                           ></el-input>
                         </div>
@@ -1153,6 +1161,7 @@ export default {
             variations: [
               {
                 id: 1,
+                stock: 1,
                 options: [],
                 optionName: {},
                 characteristics: [],
@@ -1475,6 +1484,7 @@ export default {
         products: this.ruleForm.products.map((item) => {
           const newVariation = item.variations.map((elem) => {
             return {
+              stock: elem.stock,
               options: Object.values(elem.optionName),
               price: Number.parseFloat(elem.price).toFixed(2) * 1,
               is_default: elem.is_default,
@@ -1570,6 +1580,7 @@ export default {
       product.variations.push({
         id: product.variations.at(-1).id + 1,
         options: [1],
+        stock: 1,
         price: 0,
         is_default: 0,
         product_of_the_day: 0,
@@ -1614,6 +1625,7 @@ export default {
       const newVariations = [
         {
           id: 1,
+          stock: 1,
           options: [1],
           price: 0,
           is_default: 1,

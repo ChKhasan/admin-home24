@@ -360,11 +360,7 @@
                           action=""
                         >
                           <div class="d-flex flex-column w-100">
-                            <el-form-item
-                              prop="name"
-                              label="Имя "
-                              class="form-variant-block mb-0"
-                            >
+                            <el-form-item label="Имя " class="form-variant-block mb-0">
                               <el-input placeholder="Имя (UZ)" v-model="item.name.ru" />
                             </el-form-item>
                             <el-form-item prop="name" class="form-variant-block mb-0">
@@ -1429,6 +1425,7 @@ export default {
     // products
     submitForm(ruleForm) {
       const newData = this.transformData();
+      const imagesCount = newData.products.filter((item) => item.images.length);
       let artibutReqiured = [];
       if (this.$refs.ruleFormAtributes) {
         this.$refs["ruleFormAtributes"].forEach((item) => {
@@ -1442,9 +1439,8 @@ export default {
           ? this.$refs.ruleFormAtributes.length
           : 0;
         const atributValid = artibutReqiured.length == atr;
-        console.log(newData);
         if (valid && atributValid) {
-          this.characterRequired
+          imagesCount.length == newData.products.length
             ? this.__POST_PRODUCTS(newData)
             : this.notification("Success", "Вы не добавили характеристику", "error");
         } else {
@@ -1469,14 +1465,16 @@ export default {
     submitFormCharacter(ruleForm) {
       this.characterRequired = false;
       const trueData = [];
-      this.$refs[ruleForm].forEach((item) => {
-        item.validate((valid) => {
-          if (!valid) return false;
-          trueData.push(valid);
-          if (trueData.length == this.$refs[ruleForm].length)
-            (this.characterRequired = true), this.handleOk("character");
-        });
-      });
+      this.handleOk("character");
+      // this.$refs[ruleForm].forEach((item) => {
+      //   item.validate((valid) => {
+      //     if (!valid) return false;
+      //     trueData.push(valid);
+      //     if (trueData.length == this.$refs[ruleForm].length)
+      //       this.characterRequired = true;
+      //     this.handleOk("character");
+      //   });
+      // });
     },
     transformData() {
       const newData = {
@@ -1574,13 +1572,45 @@ export default {
       });
       return options;
     },
+    // addValidation(variantId) {
+    //   const product = this.findProductWithId(variantId);
+    //   const options = { ...this.atributNames };
+    //   product.variations.push({
+    //     id: product.variations.at(-1).id + 1,
+    //     options: [1],
+    //     stock: 1,
+    //     price: 0,
+    //     is_default: 0,
+    //     product_of_the_day: 0,
+    //     is_popular: 0,
+    //     characteristics: [],
+    //     characteristicsValues: {},
+    //     optionName: options,
+    //     status: "active",
+    //     promotions: [],
+    //     name: {
+    //       ru: "",
+    //       uz: "",
+    //       en: "",
+    //     },
+    //   });
+    // },
     addValidation(variantId) {
+      const currentColorId = this.atributes.find(
+        (colorItem) => colorItem?.name.ru == "Цвет"
+      )?.id;
       const product = this.findProductWithId(variantId);
-      const options = { ...this.atributNames };
+      const options = {
+        ...this.atributNames,
+        [`at_${currentColorId}`]: currentColorId,
+      };
       product.variations.push({
         id: product.variations.at(-1).id + 1,
-        options: [1],
         stock: 1,
+        indexId: 0,
+        options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
+          ? [this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id]
+          : [1],
         price: 0,
         is_default: 0,
         product_of_the_day: 0,
@@ -1589,12 +1619,12 @@ export default {
         characteristicsValues: {},
         optionName: options,
         status: "active",
-        promotions: [],
         name: {
           ru: "",
           uz: "",
           en: "",
         },
+        promotions: [],
       });
     },
     deleteProduct(variantId) {

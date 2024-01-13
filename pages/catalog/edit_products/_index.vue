@@ -1991,25 +1991,25 @@ export default {
         this.$route.params.index
       );
       this.loading = false;
-      this.ruleForm.name = data.product.name;
+      this.ruleForm.name = data.info?.name;
       this.ruleForm.desc = data.info.desc;
       this.product = { ...data };
       this.ruleForm.brand_id = data.info.brand_id;
       this.ruleForm.model = data.info.products[0].model;
       this.ruleForm.is_active = data.info?.is_active;
-      if (data.product.info.category.parent?.parent?.id) {
-        this.cascader.push(data.product.info.category.parent.parent.id);
-        this.cascader.push(data.product.info.category.parent.id);
-        this.cascader.push(data.product.info.category.id);
-      } else if (data.product.info.category.parent?.id) {
-        this.cascader.push(data.product.info.category.parent.id);
-        this.cascader.push(data.product.info.category.id);
+      if (data.info.category.parent?.parent?.id) {
+        this.cascader.push(data.info.category.parent.parent.id);
+        this.cascader.push(data.info.category.parent.id);
+        this.cascader.push(data.info.category.id);
+      } else if (data.info.category.parent?.id) {
+        this.cascader.push(data.info.category.parent.id);
+        this.cascader.push(data.info.category.id);
       } else {
-        this.cascader.push(data.product.info.category.id);
+        this.cascader.push(data.info.category.id);
       }
       let promotionsArr = [];
-      this.ruleForm.category_id = data.product.info.category.id;
-      this.__GET_CATEGORY_BY_ID(data.product.info.category.id);
+      this.ruleForm.category_id = data.info.category.id;
+      this.__GET_CATEGORY_BY_ID(data.info.category.id);
       this.ruleForm.products = data.products.map((item, productIndex) => {
         let characterNames = {};
         const variat = item.variations.map((variant, index) => {

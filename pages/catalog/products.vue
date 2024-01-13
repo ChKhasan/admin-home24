@@ -263,7 +263,8 @@ export default {
         this.products.products?.per_page
       );
       this.data = this.products.products.data.map((item, index) => {
-        if (item.info.products[0]?.images.length > 0) {
+        console.log(item);
+        if (item.products[0]?.images.length > 0) {
           return {
             ...item,
             key: item.id,
@@ -274,8 +275,12 @@ export default {
               name: item.name,
               category: item.category,
             },
-            img: item.info.products.filter((elem) => elem.id == item.id)[0].images[0]
-              .sm_img,
+            img:
+              item.products.filter((elem) => elem.id == item.default_product_id).length >
+              0
+                ? item.products.filter((elem) => elem.id == item.default_product_id)[0]
+                    .images[0].sm_img
+                : item.products[0]?.images[0]?.sm_img,
             status: item.status,
           };
         } else {
@@ -293,6 +298,7 @@ export default {
           };
         }
       });
+      console.log(this.data);
     },
     indexPage(current_page, per_page) {
       return (current_page * 1 - 1) * per_page + 1;

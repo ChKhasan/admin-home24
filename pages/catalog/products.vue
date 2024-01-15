@@ -115,15 +115,15 @@
           <span slot="customTitle"></span>
 
           <span
-            slot="status"
+            slot="is_active"
             slot-scope="text"
             class="tags-style"
             :class="{
-              tag_new: text == 'active',
-              tag_canceled: text == 'inactive',
+              tag_new: text == 1,
+              tag_canceled: text == 0,
             }"
           >
-            {{ text == "active" ? "Активный " : "Неактивный" }}
+            {{ text ? "Активный " : "Неактивный" }}
           </span>
 
           <span slot="id" slot-scope="text">
@@ -263,8 +263,10 @@ export default {
         this.products.products?.per_page
       );
       this.data = this.products.products.data.map((item, index) => {
-        console.log(item);
-        if (item.products[0]?.images.length > 0) {
+        const DEFAULT_PRODUCT = item.products.filter(
+          (elem) => elem.id == item.default_product_id
+        )[0];
+        if (DEFAULT_PRODUCT?.images.length > 0) {
           return {
             ...item,
             key: item.id,
@@ -275,12 +277,7 @@ export default {
               name: item.name,
               category: item.category,
             },
-            img:
-              item.products.filter((elem) => elem.id == item.default_product_id).length >
-              0
-                ? item.products.filter((elem) => elem.id == item.default_product_id)[0]
-                    .images[0].sm_img
-                : item.products[0]?.images[0]?.sm_img,
+            img: DEFAULT_PRODUCT.images[0].sm_img,
             status: item.status,
           };
         } else {
@@ -332,6 +329,7 @@ export default {
   },
   async mounted() {
     this.getFirstData("/catalog/products", "__GET_PRODUCTS");
+    
   },
   watch: {
     async current(val) {

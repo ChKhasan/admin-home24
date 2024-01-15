@@ -1,12 +1,13 @@
 <template>
   <div>
-    <a-select
-      ref="select"
-      :options="options"
-      showSearch
-      v-model="selectedValue"
-      placeholder="Type to search"
-    />
+    <div v-for="(product, index) in products" :key="product.id">
+      <a-select v-for="(option, optionIndex) in optionsList" :key="optionIndex" v-model="product.artibuts[optionIndex]" @change="checkCombinations">
+        <a-select-option v-for="d in option" :key="d.id" :value="d?.id" :disabled="isOptionDisabled(product, optionIndex, d.id)">
+          {{ d?.name }}
+        </a-select-option>
+      </a-select>
+    </div>
+    <button @click="addProduct">Create</button>
   </div>
 </template>
 
@@ -14,40 +15,82 @@
 export default {
   data() {
     return {
-      selectedValue: "",
-      options: ["Option 1", "Option 2", "Option 3"],
+      products: [
+        {
+          artibuts: [],
+          id: 1,
+        },
+      ],
+      options: [
+        [
+          { name: "name1", id: 1 },
+          { name: "name2", id: 2 },
+        ],
+        [
+          { name: "name11", id: 11 },
+          { name: "name12", id: 12 },
+        ],
+      ],
+      allCombinations: [],
     };
   },
+  computed: {
+    optionsList() {
+      return this.options.slice(0, this.products[0].artibuts.length + 1);
+    },
+  },
   methods: {
-    handleInput(value) {
-      // Your custom logic to determine whether to automatically select the value
-      // const shouldAutoSelect = value.length > 2;
+    generateAllCombinations(index = 0, currentCombination = []) {
+      if (index === this.options.length) {
+        this.allCombinations.push([...currentCombination]);
+        return;
+      }
 
-      if (shouldAutoSelect) {
-        // Programmatically set the selected value
-        this.setSelectedValue(value);
+      for (const option of this.options[index]) {
+        currentCombination[index] = option.id;
+        this.generateAllCombinations(index + 1, [...currentCombination]);
       }
     },
-    setSelectedValue(value) {
-      const selectComponent = this.$refs.select;
+    isOptionDisabled(product, optionIndex, optionId) {
+  if (optionIndex > 0) {
+    const currentCombination = [...product.artibuts];
+    currentCombination[optionIndex] = optionId;
 
-      // Find the option with the matching value
-      const option = selectComponent.options.find((opt) => opt.value === value);
+    // Check if the current combination is already chosen
+    return (
+      !this.allCombinations.some(
+        (combination) =>
+          combination.length === currentCombination.length &&
+          combination.every((value, index) => value === currentCombination[index])
+      ) ||
+      product.artibuts.some((value, index) => index !== optionIndex && value === optionId)
+    );
+  }
+  return false;
+},
 
-      if (option) {
-        // Update the selected value
-        this.selectedValue = option.value;
-
-        // Close the dropdown and clear the search input
-        selectComponent.blur();
-      }
+    checkCombinations() {
+      this.allCombinations = [];
+      this.generateAllCombinations();
+      console.log('All Combinations:', this.allCombinations);
     },
-    handleBlur() {
-      // Clear the selected value if the user leaves the Select component
-      if (!this.selectedValue) {
-        this.selectedValue = "";
-      }
+    addProduct() {
+      this.products.push({
+        artibuts: [],
+        id: this.products.length + 2,
+      });
     },
+  },
+  created() {
+    this.generateAllCombinations();
   },
 };
 </script>
+
+
+
+<style lang="css">
+.ant-select-selection--single {
+  width: 200px;
+}
+</style>

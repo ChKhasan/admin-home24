@@ -165,7 +165,7 @@ export default {
           className: "column-name",
           width: "60px",
         },
-        
+
         {
           title: "ПРОДУКТ",
           dataIndex: "img",
@@ -216,15 +216,11 @@ export default {
         },
         {
           title: "Статус",
-          key: "status",
-          dataIndex: "status",
-          scopedSlots: { customRender: "status" },
+          key: "is_active",
+          dataIndex: "is_active",
+          scopedSlots: { customRender: "is_active" },
           className: "column-tags",
-          filters: [
-            { text: "Активный", value: "active" },
-            { text: "Неактивный", value: "inactive" },
-          ],
-          onFilter: (value, record) => record.status.indexOf(value) === 0,
+
           // width: "16%",
         },
         {
@@ -816,7 +812,7 @@ export default {
           scopedSlots: { customRender: "not_sent" },
           className: "column-name",
         },
-       
+
         {
           title: "действия",
           key: "id",

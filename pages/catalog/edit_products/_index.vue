@@ -411,6 +411,13 @@
                               "
                             >
                               <el-option
+                                :disabled="
+                                  item.is_combs?.length > 0
+                                    ? !item.is_combs.find((combItem) =>
+                                        combItem.includes(optionElement.id)
+                                      )
+                                    : true
+                                "
                                 class="color"
                                 :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
                                 v-for="optionElement in atribut.options"
@@ -440,13 +447,11 @@
                             >
                               <el-option
                                 :disabled="
-                                  Boolean(
-                                    element.variations.find((optionItem) =>
-                                      Object.values(optionItem.optionName).includes(
-                                        optionElement.id
+                                  item.is_combs?.length > 0
+                                    ? !item.is_combs.find((combItem) =>
+                                        combItem.includes(optionElement.id)
                                       )
-                                    )
-                                  )
+                                    : true
                                 "
                                 v-for="optionElement in atribut.options"
                                 :key="optionElement.id"
@@ -594,7 +599,21 @@
                 <!-- </transition-group> -->
                 <!-- Validations -->
               </div>
-              <div class="d-flex justify-content-start" v-if="atributes.length > 0">
+              <div
+                class="d-flex justify-content-start"
+                v-if="
+                  atributes.length > 0 &&
+                  allCombinationsAtr.filter(
+                    (combItem) =>
+                      combItem[0] ==
+                      element.variations[0].optionName[
+                        `at_${
+                          atributes.find((colorItem) => colorItem.name.ru == 'Цвет').id
+                        }`
+                      ]
+                  ).length > element.variations.length
+                "
+              >
                 <div class="create-inner-variant" @click="addValidation(element.id)">
                   <span v-html="addInnerValidatIcon"></span>
                   Добавит внутренний варизаци
@@ -610,7 +629,11 @@
             </div>
           </transition-group>
           <div>
-            <div class="add-variant create-inner-variant mt-0" @click="addProduct">
+            <div
+              class="add-variant create-inner-variant mt-0"
+              @click="addProduct"
+              v-if="productsLength"
+            >
               <span v-html="addInnerValidatIcon"></span>
               Добавить вариации
             </div>
@@ -1210,6 +1233,7 @@ export default {
               {
                 id: 1,
                 stock: 1,
+                is_combs: [],
                 indexId: 0,
                 options: [],
                 optionName: {},
@@ -1326,9 +1350,17 @@ export default {
         ],
       },
       loadingBtn: false,
+      allCombinationsAtr: [],
+      combinationsAtr: [],
     };
   },
   computed: {
+    productsLength() {
+      return (
+        this.atributes.find((colorItem) => colorItem.name.ru == "Цвет")?.options?.length >
+        this.ruleForm.products.length
+      );
+    },
     findLastCategory() {
       // let allCategories = [];
       // if (this.cascaderCategories.length > 0 && this.lastCategory.length == 3) {
@@ -1610,7 +1642,7 @@ export default {
     // products
     submitForm(ruleForm) {
       const newData = this.transformData();
-
+      const imagesCount = newData.products.filter((item) => item.images.length);
       let artibutReqiured = [];
       if (this.$refs.ruleFormAtributes) {
         this.$refs["ruleFormAtributes"].forEach((item) => {
@@ -1627,8 +1659,9 @@ export default {
 
         if (valid) {
           if (atributValid) {
-            // console.log(newData);
-            this.__POST_PRODUCTS(newData);
+            imagesCount.length == newData.products.length
+              ? this.__POST_PRODUCTS(newData)
+              : this.notification("Required", "Product image is required", "error");
           }
         } else {
           return false;
@@ -1667,45 +1700,155 @@ export default {
       //   });
       // }
     },
+    // transformData() {
+    //   const newData = {
+    //     ...this.ruleForm,
+
+    //     products: this.ruleForm.products.map((item) => {
+    //       const newVariation = item.variations.map((elem) => {
+    //         return {
+    //           id: elem.indexId,
+    //           stock: elem.stock,
+    //           options: Object.values(elem.optionName),
+    //           price: Number.parseFloat(elem.price).toFixed(2) * 1,
+    //           is_default: elem.is_default,
+    //           is_popular: elem.is_popular,
+    //           product_of_the_day: elem.product_of_the_day,
+    //           characteristics: Object.keys(elem.characteristicsValues).map(
+    //             (charItem, index) => {
+    //               return {
+    //                 characteristic_id: Number(charItem.split("_")[1]),
+    //                 name: elem.characteristicsValues[charItem],
+    //               };
+    //             }
+    //           ),
+    //           status: elem.status,
+    //           name: elem.name,
+    //           promotions: elem.promotions,
+    //         };
+    //       });
+    //       return {
+    //         variations: newVariation,
+    //         images: item.imagesData.map((item) => {
+    //           return item.id
+    //             ? {
+    //                 id: item.id,
+    //               }
+    //             : {
+    //                 id: 0,
+    //                 img: item.response.path,
+    //               };
+    //         }),
+    //       };
+    //     }),
+    //   };
+    //   return newData;
+    // },
+    // transformData() {
+    //   const artIds = this.atributes.map((elem) => elem.id);
+    //   const charIds = [];
+    //   this.character_group.forEach((item) => {
+    //     item.characteristics.forEach((elem) => {
+    //       charIds.push(elem.id);
+    //     });
+    //   });
+    //   const newData = {
+    //     ...this.ruleForm,
+    //     products: this.ruleForm.products.map((item) => {
+    //       const newVariation = item.variations.map((elem) => {
+    //         const atrIoptions = Object.entries(elem.optionName)
+    //           .map(([artItem, value]) => {
+    //             if (artIds.includes(Number(artItem.split("_")[1]))) {
+    //               return value;
+    //             } else {
+    //               return undefined;
+    //             }
+    //           })
+    //           .filter((check) => check);
+    //         const charIoptions = Object.entries(elem.characteristicsValues)
+    //           .map(([charItem, value]) => {
+    //             if (charIds.includes(Number(charItem.split("_")[1])) && value) {
+    //               return {
+    //                 characteristic_id: Number(charItem.split("_")[1]),
+    //                 name: value,
+    //               };
+    //             } else {
+    //               return undefined;
+    //             }
+    //           })
+    //           .filter((check) => check);
+
+    //         return {
+    //           stock: elem.stock,
+    //           options: atrIoptions,
+    //           price: Number.parseFloat(elem.price).toFixed(2) * 1,
+    //           is_default: elem.is_default,
+    //           is_popular: elem.is_popular,
+    //           product_of_the_day: elem.product_of_the_day,
+    //           characteristics: charIoptions,
+    //           status: elem.status,
+    //           promotions: elem.promotions,
+    //           name: elem.name,
+    //         };
+    //       });
+    //       return {
+    //         variations: newVariation,
+    //         images: item.imagesData.map((item) => item.response.path),
+    //       };
+    //     }),
+    //   };
+    //   return newData;
+    // },
     transformData() {
+      const artIds = this.atributes.map((elem) => elem.id);
+      const charIds = [];
+      this.character_group.forEach((item) => {
+        item.characteristics.forEach((elem) => {
+          charIds.push(elem.id);
+        });
+      });
       const newData = {
         ...this.ruleForm,
-        // category_id: this.cascader.at(-1),
         products: this.ruleForm.products.map((item) => {
           const newVariation = item.variations.map((elem) => {
+            const atrIoptions = Object.entries(elem.optionName)
+              .map(([artItem, value]) => {
+                if (artIds.includes(Number(artItem.split("_")[1]))) {
+                  return value;
+                } else {
+                  return undefined;
+                }
+              })
+              .filter((check) => check);
+            const charIoptions = Object.entries(elem.characteristicsValues)
+              .map(([charItem, value]) => {
+                if (charIds.includes(Number(charItem.split("_")[1])) && value) {
+                  return {
+                    characteristic_id: Number(charItem.split("_")[1]),
+                    name: value,
+                  };
+                } else {
+                  return undefined;
+                }
+              })
+              .filter((check) => check);
+
             return {
-              id: elem.indexId,
               stock: elem.stock,
-              options: Object.values(elem.optionName),
+              options: atrIoptions,
               price: Number.parseFloat(elem.price).toFixed(2) * 1,
               is_default: elem.is_default,
               is_popular: elem.is_popular,
               product_of_the_day: elem.product_of_the_day,
-              characteristics: Object.keys(elem.characteristicsValues).map(
-                (charItem, index) => {
-                  return {
-                    characteristic_id: Number(charItem.split("_")[1]),
-                    name: elem.characteristicsValues[charItem],
-                  };
-                }
-              ),
+              characteristics: charIoptions,
               status: elem.status,
-              name: elem.name,
               promotions: elem.promotions,
+              name: elem.name,
             };
           });
           return {
             variations: newVariation,
-            images: item.imagesData.map((item) => {
-              return item.id
-                ? {
-                    id: item.id,
-                  }
-                : {
-                    id: 0,
-                    img: item.response.path,
-                  };
-            }),
+            images: item.imagesData.map((item) => item.response.path),
           };
         }),
       };
@@ -1734,13 +1877,47 @@ export default {
       const product = this.findProductWithId(obj.productId);
       if (obj.color) {
         product.variations = product.variations.map((item) => {
-          let elem = item;
+          let elem = { ...item.optionName, [`at_${obj.id}`]: id };
           return {
-            ...elem,
-            optionName: { ...item.optionName, [`at_${obj.id}`]: id },
+            ...item,
+            optionName: elem,
           };
         });
       }
+      this.reloadColorAndComb(obj.productId);
+    },
+    reloadColorAndComb(id) {
+      let is_combs = [];
+      const product = this.findProductWithId(id);
+      product.variations = product.variations.map((item) => {
+        const varComb = Object.values(item.optionName);
+        if (this.atributes.length == varComb.length) {
+          is_combs = this.combinationsAtr.filter(
+            (combItem) =>
+              varComb.every((element) => combItem.includes(element)) &&
+              combItem.join("").length == varComb.join("").length
+          );
+          this.combinationsAtr = this.combinationsAtr.filter(
+            (combItem) => !varComb.every((element) => combItem.includes(element))
+          );
+        } else {
+          is_combs = this.combinationsAtr.filter((combItem) => {
+            return varComb.every((element) => combItem.includes(element));
+          });
+        }
+        return {
+          ...item,
+          is_combs: is_combs,
+        };
+      });
+    },
+    atributOptionsChange(obj) {
+      const product = this.findProductWithId(obj.productId);
+      product.variations.find((varId) => varId.id == obj.variantId).options[
+        obj.index
+      ] = product.variations.find((varId) => varId.id == obj.variantId).optionName[
+        `at_${obj.id}`
+      ];
     },
     handleCancel() {
       this.previewVisible = false;
@@ -1765,12 +1942,16 @@ export default {
         (colorItem) => colorItem?.name.ru == "Цвет"
       )?.id;
       const product = this.findProductWithId(variantId);
+      const findColorVar = product.variations.find(
+        (item) => item.optionName[`at_${currentColorId}`]
+      )?.optionName[`at_${currentColorId}`];
       const options = {
         ...this.atributNames,
-        [`at_${currentColorId}`]: currentColorId,
+        [`at_${currentColorId}`]: findColorVar,
       };
       product.variations.push({
         id: product.variations.at(-1).id + 1,
+        is_combs: this.combinationsAtr,
         stock: 1,
         indexId: 0,
         options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
@@ -1791,7 +1972,75 @@ export default {
         },
         promotions: [],
       });
+      this.reloadColorAndComb(variantId);
     },
+    // addValidation(variantId) {
+    //   const currentColorId = this.atributes.find(
+    //     (colorItem) => colorItem?.name.ru == "Цвет"
+    //   )?.id;
+    //   const product = this.findProductWithId(variantId);
+    //   const options = {
+    //     ...this.atributNames,
+    //     [`at_${currentColorId}`]: currentColorId,
+    //   };
+    //   product.variations.push({
+    //     id: product.variations.at(-1).id + 1,
+    //     stock: 1,
+    //     indexId: 0,
+    //     options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
+    //       ? [this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id]
+    //       : [1],
+    //     price: 0,
+    //     is_default: 0,
+    //     product_of_the_day: 0,
+    //     is_popular: 0,
+    //     characteristics: [],
+    //     characteristicsValues: {},
+    //     optionName: options,
+    //     status: "active",
+    //     name: {
+    //       ru: "",
+    //       uz: "",
+    //       en: "",
+    //     },
+    //     promotions: [],
+    //   });
+    // },
+    // addValidation(variantId) {
+    //   const currentColorId = this.atributes.find(
+    //     (colorItem) => colorItem?.name.ru == "Цвет"
+    //   )?.id;
+    //   const product = this.findProductWithId(variantId);
+    //   const findColorVar = product.variations.find(
+    //     (item) => item.optionName[`at_${currentColorId}`]
+    //   )?.optionName[`at_${currentColorId}`];
+    //   const options = {
+    //     ...this.atributNames,
+    //     [`at_${currentColorId}`]: findColorVar,
+    //   };
+    //   product.variations.push({
+    //     id: product.variations.at(-1).id + 1,
+    //     stock: 1,
+    //     indexId: 0,
+    //     options: this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id
+    //       ? [this.atributes.find((colorItem) => colorItem?.name.ru == "Цвет")?.id]
+    //       : [1],
+    //     price: 0,
+    //     is_default: 0,
+    //     product_of_the_day: 0,
+    //     is_popular: 0,
+    //     characteristics: [],
+    //     characteristicsValues: {},
+    //     optionName: options,
+    //     status: "active",
+    //     name: {
+    //       ru: "",
+    //       uz: "",
+    //       en: "",
+    //     },
+    //     promotions: [],
+    //   });
+    // },
     deleteProduct(variantId) {
       if (this.ruleForm.products.length > 1) {
         this.ruleForm.products = this.ruleForm.products.filter(
@@ -1832,13 +2081,13 @@ export default {
     cascaderChange(e) {
       this.__GET_CATEGORY_BY_ID(e.at(-1));
     },
-    addProduct() {
-      const options = { ...this.atributNames };
-      const newVariations = [
+    async addProduct() {
+      const options = await { ...this.atributNames };
+      const newVariations = await [
         {
           id: 1,
+          is_combs: this.combinationsAtr,
           stock: 1,
-          indexId: 0,
           options: [1],
           price: 0,
           is_default: 1,
@@ -1848,21 +2097,53 @@ export default {
           characteristics: [],
           characteristicsValues: {},
           status: "active",
+          promotions: [],
           name: {
             ru: "",
             uz: "",
             en: "",
           },
-          promotions: [],
         },
       ];
-      this.ruleForm.products.push({
+      await this.ruleForm.products.push({
         id: this.ruleForm.products.at(-1).id + 1,
         images: [],
         imagesData: [],
         variations: newVariations,
       });
+      this.reloadColorAndComb(this.ruleForm.products.at(-1).id);
     },
+    // addProduct() {
+    //   const options = { ...this.atributNames };
+    //   const newVariations = [
+    //     {
+    //       id: 1,
+    //       stock: 1,
+    //       indexId: 0,
+    //       options: [1],
+    //       price: 0,
+    //       is_default: 1,
+    //       product_of_the_day: 0,
+    //       is_popular: 0,
+    //       optionName: options,
+    //       characteristics: [],
+    //       characteristicsValues: {},
+    //       status: "active",
+    //       name: {
+    //         ru: "",
+    //         uz: "",
+    //         en: "",
+    //       },
+    //       promotions: [],
+    //     },
+    //   ];
+    //   this.ruleForm.products.push({
+    //     id: this.ruleForm.products.at(-1).id + 1,
+    //     images: [],
+    //     imagesData: [],
+    //     variations: newVariations,
+    //   });
+    // },
     // variant
     onChangeVariants(elementId, varId) {
       this.ruleForm.products
@@ -1956,18 +2237,22 @@ export default {
         id: null,
       });
     },
-
     async __GET_CATEGORY_BY_ID(id) {
       const data = await this.$store.dispatch("fetchCategories/getCategoriesById", id);
       const category = data.category;
       this.atributes = category.attributes;
+      const arrays = category.attributes.map((item) => {
+        const inArr = item.options.map((elem) => elem.id);
+        return inArr;
+      });
+      this.combinations(arrays);
       this.character_group = category.characteristic_groups;
       this.atributes.forEach((element) => {
         this.rulesAtributes[`at_${element.id}`] = [
           {
             required: true,
-            message: "Атрибут обязателен",
-            trigger: "blur",
+            message: "Atribut is required",
+            trigger: "change",
           },
         ];
       });
@@ -1977,13 +2262,40 @@ export default {
           this.rulesCharacter[`char_${elem.id}`] = [
             {
               required: true,
-              message: "Название бренда обязательна",
+              message: "Brand name is required",
               trigger: "change",
             },
           ];
         });
       });
     },
+    // async __GET_CATEGORY_BY_ID(id) {
+    //   const data = await this.$store.dispatch("fetchCategories/getCategoriesById", id);
+    //   const category = data.category;
+    //   this.atributes = category.attributes;
+    //   this.character_group = category.characteristic_groups;
+    //   this.atributes.forEach((element) => {
+    //     this.rulesAtributes[`at_${element.id}`] = [
+    //       {
+    //         required: true,
+    //         message: "Атрибут обязателен",
+    //         trigger: "blur",
+    //       },
+    //     ];
+    //   });
+    //   category.characteristic_groups.forEach((item) => {
+    //     item.characteristics.forEach((elem) => {
+    //       this.characterNames.push(`char_${elem.id}`);
+    //       this.rulesCharacter[`char_${elem.id}`] = [
+    //         {
+    //           required: true,
+    //           message: "Название бренда обязательна",
+    //           trigger: "change",
+    //         },
+    //       ];
+    //     });
+    //   });
+    // },
     async __GET_PRODUCT_BY_ID() {
       this.loading = true;
       const data = await this.$store.dispatch(
@@ -2097,15 +2409,57 @@ export default {
             copyCharacter = { ...elem.characteristicsValues };
           } else {
             Object.keys(copyCharacter).forEach((charElem) => {
-              if (!Object.keys(elem.characteristicsValues).includes(charElem)) {
+              if (!elem.characteristicsValues[charElem]) {
                 elem.characteristicsValues[charElem] = copyCharacter[charElem];
                 elem.characteristicsValues = { ...elem.characteristicsValues };
               }
+              // if (!Object.keys(elem.characteristicsValues).includes(charElem)) {
+              //   elem.characteristicsValues[charElem] = copyCharacter[charElem];
+              //   elem.characteristicsValues = { ...elem.characteristicsValues };
+              // }
             });
           }
         });
       });
       copyCharacter = {};
+    },
+    generateCombinations(arrays, currentIndex, currentCombination, resultMatrix) {
+      if (currentIndex === arrays.length) {
+        resultMatrix.push([...currentCombination]);
+        return;
+      }
+
+      for (let i = 0; i < arrays[currentIndex].length; i++) {
+        currentCombination.push(arrays[currentIndex][i]);
+        this.generateCombinations(
+          arrays,
+          currentIndex + 1,
+          currentCombination,
+          resultMatrix
+        );
+        currentCombination.pop();
+      }
+    },
+    combinations(arrays) {
+      const resultMatrix = [];
+      this.generateCombinations(arrays, 0, [], resultMatrix);
+      this.allCombinationsAtr = resultMatrix;
+      this.combinationsAtr = resultMatrix;
+      this.reloadCombs();
+    },
+    reloadCombs() {
+      this.ruleForm.products = this.ruleForm.products.map((item) => {
+        const variant = item.variations.map((elem) => {
+          return {
+            ...elem,
+            is_combs: this.combinationsAtr,
+          };
+        });
+        return {
+          ...item,
+          variations: variant,
+        };
+      });
     },
   },
   watch: {

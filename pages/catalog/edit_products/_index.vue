@@ -1848,7 +1848,17 @@ export default {
           });
           return {
             variations: newVariation,
-            images: item.imagesData.map((item) => item.response.path),
+            // images: item.imagesData.map((item) => item.response.path),
+            images: item.imagesData.map((item) => {
+              return item.id
+                ? {
+                    id: item.id,
+                  }
+                : {
+                    id: 0,
+                    img: item.response.path,
+                  };
+            }),
           };
         }),
       };
@@ -2396,7 +2406,6 @@ export default {
       // this.promotionsData = promotionsArr.filter(
       //   (item) => !this.promotionsData.find((elem) => elem.id == item.id)
       // );
-      console.log(this.ruleForm);
       this.promotionsData = promotionsArr.filter(
         (obj, index) => promotionsArr.findIndex((item) => item.id === obj.id) === index
       );

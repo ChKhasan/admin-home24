@@ -1834,6 +1834,7 @@ export default {
               .filter((check) => check);
 
             return {
+              id: elem.indexId,
               stock: elem.stock,
               options: atrIoptions,
               price: Number.parseFloat(elem.price).toFixed(2) * 1,

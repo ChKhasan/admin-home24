@@ -412,11 +412,7 @@
                             >
                               <el-option
                                 :disabled="
-                                  item.is_combs?.length > 0
-                                    ? !item.is_combs.find((combItem) =>
-                                        combItem.includes(optionElement.id)
-                                      )
-                                    : true
+                                  Boolean(!color_options.includes(optionElement.id))
                                 "
                                 class="color"
                                 :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
@@ -1352,6 +1348,7 @@ export default {
       loadingBtn: false,
       allCombinationsAtr: [],
       combinationsAtr: [],
+      color_options: [],
     };
   },
   computed: {
@@ -1383,9 +1380,11 @@ export default {
     },
   },
   async mounted() {
-    this.__GET_BRANDS();
-    this.__GET_CATEGORIES();
-    await this.__GET_PRODUCT_BY_ID();
+    await Promise.all([
+      this.__GET_BRANDS(),
+      this.__GET_CATEGORIES(),
+      this.__GET_PRODUCT_BY_ID(),
+    ]);
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     if (localStorage.getItem("lastCategory")) {
@@ -1903,10 +1902,8 @@ export default {
       product.variations = product.variations.map((item) => {
         const varComb = Object.values(item.optionName);
         if (this.atributes.length == varComb.length) {
-          is_combs = this.combinationsAtr.filter(
-            (combItem) =>
-              varComb.every((element) => combItem.includes(element)) &&
-              combItem.join("").length == varComb.join("").length
+          is_combs = this.combinationsAtr.filter((combItem) =>
+            varComb.every((element) => combItem.includes(element))
           );
           this.combinationsAtr = this.combinationsAtr.filter(
             (combItem) => !varComb.every((element) => combItem.includes(element))
@@ -1984,6 +1981,23 @@ export default {
         promotions: [],
       });
       this.reloadColorAndComb(variantId);
+      this.colorOptionsFilter();
+    },
+    colorOptionsFilter() {
+      if (this.atributes.length > 0) {
+        this.color_options = this.atributes
+          .find((colorItem) => colorItem?.name.ru == "Цвет")
+          ?.options.map((item) => item.id);
+
+        this.color_options = this.color_options.filter(
+          (elem) =>
+            !this.ruleForm.products.find(
+              (item) =>
+                (item.variations.at(-1).is_combs.length > 0 &&
+                  item.variations.at(-1).is_combs[0][0]) == elem
+            )
+        );
+      }
     },
     // addValidation(variantId) {
     //   const currentColorId = this.atributes.find(
@@ -2123,6 +2137,7 @@ export default {
         variations: newVariations,
       });
       this.reloadColorAndComb(this.ruleForm.products.at(-1).id);
+      this.colorOptionsFilter();
     },
     // addProduct() {
     //   const options = { ...this.atributNames };
@@ -2212,35 +2227,76 @@ export default {
     },
     async __GET_CATEGORIES() {
       const data = await this.$store.dispatch("fetchCategories/getCategories");
+      // this.categories = [...data.categories?.data];
+      // this.cascaderCategories = this.categories.map((item) => {
+      //   item.label = item.name.ru;
+      //   if (item.children.length > 0) {
+      //     item.children = item.children.map((item2) => {
+      //       item2.label = item2.name.ru;
+      //       if (item2.children.length > 0) {
+      //         item2.children = item2.children.map((item3) => {
+      //           item3.label = item3.name.ru;
+      //           if (item3.children?.length > 0) {
+      //             return item3;
+      //           } else {
+      //             delete item3["children"];
+      //             return item3;
+      //           }
+      //         });
+      //         return item2;
+      //       } else {
+      //         delete item2["children"];
+      //         return item2;
+      //       }
+      //     });
+      //     return item;
+      //   } else {
+      //     delete item["children"];
+      //     return item;
+      //   }
+      // });
+      // this.cascaderCategories = this.cascaderCategories.filter((item) => item.children);
       this.categories = [...data.categories?.data];
-      this.cascaderCategories = this.categories.map((item) => {
-        item.label = item.name.ru;
-        if (item.children.length > 0) {
-          item.children = item.children.map((item2) => {
-            item2.label = item2.name.ru;
-            if (item2.children.length > 0) {
-              item2.children = item2.children.map((item3) => {
-                item3.label = item3.name.ru;
-                if (item3.children?.length > 0) {
-                  return item3;
-                } else {
-                  delete item3["children"];
-                  return item3;
-                }
-              });
-              return item2;
-            } else {
-              delete item2["children"];
-              return item2;
-            }
-          });
-          return item;
-        } else {
-          delete item["children"];
-          return item;
-        }
-      });
+
+      const mapCategories = (categories) => {
+        return categories.map((category) => {
+          const label = category.name.ru;
+          const children =
+            category.children?.length > 0 ? mapCategories(category?.children) : undefined;
+          const { children: _, ...rest } = category;
+          if (category.children?.length == 0) {
+            return {
+              ...rest,
+              label,
+            };
+          } else {
+            return {
+              ...rest,
+              label,
+              children,
+            };
+          }
+        });
+      };
+
+      this.cascaderCategories = mapCategories(this.categories);
       this.cascaderCategories = this.cascaderCategories.filter((item) => item.children);
+      // this.categoriesWidthChild.unshift({
+      //   name: { ru: "Главная категория" },
+      //   id: null,
+      // });
+      // data.categories?.data.forEach((item) => {
+      //   if (item.children?.length > 0) {
+      //     this.categoriesWidthChild = [
+      //       ...this.categoriesWidthChild,
+      //       item,
+      //       ...item.children,
+      //     ];
+      //   } else {
+      //     this.categoriesWidthChild = [...this.categoriesWidthChild, item];
+      //   }
+      // });
+      console.log(this.cascaderCategories);
       this.categories.unshift({
         name: {
           ru: "Главная категория",
@@ -2279,6 +2335,7 @@ export default {
           ];
         });
       });
+      this.colorOptionsFilter();
     },
     // async __GET_CATEGORY_BY_ID(id) {
     //   const data = await this.$store.dispatch("fetchCategories/getCategoriesById", id);
@@ -2313,6 +2370,32 @@ export default {
         "fetchProducts/getProductsById",
         this.$route.params.index
       );
+      const category = [
+        {
+          name: "category 1",
+          id: 1,
+          parent: {
+            name: "category 2",
+            id: 2,
+            parent: {
+              name: "category 3",
+              id: 3,
+            },
+          },
+        },
+        {
+          name: "category 11",
+          id: 11,
+          parent: {
+            name: "category 12",
+            id: 21,
+            parent: {
+              name: "category 13",
+              id: 31,
+            },
+          },
+        },
+      ];
       this.loading = false;
       this.ruleForm.name = data.info?.name;
       this.ruleForm.desc = data.info.desc;
@@ -2320,16 +2403,14 @@ export default {
       this.ruleForm.brand_id = data.info.brand_id;
       this.ruleForm.model = data.info.products[0].model;
       this.ruleForm.is_active = data.info?.is_active;
-      if (data.info.category.parent?.parent?.id) {
-        this.cascader.push(data.info.category.parent.parent.id);
-        this.cascader.push(data.info.category.parent.id);
-        this.cascader.push(data.info.category.id);
-      } else if (data.info.category.parent?.id) {
-        this.cascader.push(data.info.category.parent.id);
-        this.cascader.push(data.info.category.id);
-      } else {
-        this.cascader.push(data.info.category.id);
+      function buildCascader(category, cascader = []) {
+        if (category.parent) {
+          buildCascader(category.parent, cascader);
+        }
+        cascader.push(category.id);
       }
+      buildCascader(data.info.category, this.cascader);
+
       let promotionsArr = [];
       this.ruleForm.category_id = data.info.category.id;
       this.__GET_CATEGORY_BY_ID(data.info.category.id);
@@ -2410,6 +2491,9 @@ export default {
       this.promotionsData = promotionsArr.filter(
         (obj, index) => promotionsArr.findIndex((item) => item.id === obj.id) === index
       );
+      this.ruleForm.products.forEach((elem) => {
+        this.reloadColorAndComb(elem.id);
+      });
     },
     characterValueCopy() {
       var copyCharacter = {};

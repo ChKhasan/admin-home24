@@ -432,11 +432,7 @@
                               >
                                 <el-option
                                   :disabled="
-                                    item.is_combs?.length > 0
-                                      ? !item.is_combs.find((combItem) =>
-                                          combItem.includes(optionElement.id)
-                                        )
-                                      : true
+                                    Boolean(!color_options.includes(optionElement.id))
                                   "
                                   class="color"
                                   :style="`color: ${optionElement.name.ru}; background-color: ${optionElement.name.ru}`"
@@ -1295,6 +1291,7 @@ export default {
       loadingBtn: false,
       allCombinationsAtr: [],
       combinationsAtr: [],
+      color_options: [],
     };
   },
   computed: {
@@ -1610,10 +1607,8 @@ export default {
       product.variations = product.variations.map((item) => {
         const varComb = Object.values(item.optionName);
         if (this.atributes.length == varComb.length) {
-          is_combs = this.combinationsAtr.filter(
-            (combItem) =>
-              varComb.every((element) => combItem.includes(element)) &&
-              combItem.join("").length == varComb.join("").length
+          is_combs = this.combinationsAtr.filter((combItem) =>
+            varComb.every((element) => combItem.includes(element))
           );
           this.combinationsAtr = this.combinationsAtr.filter(
             (combItem) => !varComb.every((element) => combItem.includes(element))
@@ -1628,6 +1623,24 @@ export default {
           is_combs: is_combs,
         };
       });
+    },
+    colorOptionsFilter() {
+      this.color_options = this.atributes
+        .find((colorItem) => colorItem?.name.ru == "Цвет")
+        ?.options.map((item) => item.id);
+      if (
+        this.atributes.length > 0 &&
+        Object.values(this.ruleForm.products[0].variations[0].optionName).length > 0
+      ) {
+        this.color_options = this.color_options.filter(
+          (elem) =>
+            !this.ruleForm.products.find(
+              (item) =>
+                (item.variations.at(-1).is_combs.length > 0 &&
+                  item.variations.at(-1).is_combs[0][0]) == elem
+            )
+        );
+      }
     },
     atributOptionsChange(obj) {
       const product = this.findProductWithId(obj.productId);
@@ -1707,6 +1720,7 @@ export default {
         promotions: [],
       });
       this.reloadColorAndComb(variantId);
+      this.colorOptionsFilter();
     },
     deleteProduct(variantId) {
       if (this.ruleForm.products.length > 1) {
@@ -1761,7 +1775,9 @@ export default {
         imagesData: [],
         variations: newVariations,
       });
+      console.log(this.ruleForm);
       this.reloadColorAndComb(this.ruleForm.products.at(-1).id);
+      this.colorOptionsFilter();
     },
     // variant
     onChangeVariants(elementId, varId) {
@@ -1869,6 +1885,7 @@ export default {
           ];
         });
       });
+      this.colorOptionsFilter();
     },
     characterValueCopy() {
       var copyCharacter = {};

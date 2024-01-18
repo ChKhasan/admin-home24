@@ -16,7 +16,7 @@
         <div class="d-flex justify-content-between align-items-center card_header">
           <div class="justify-content-between d-flex w-100 align-items-center">
             <FormTitle title="Категории" class="mb-0" />
-            <StatusFilter @changeStatus="changeStatus" propName="status"/>
+            <StatusFilter @changeStatus="changeStatus" propName="status" />
           </div>
         </div>
         <div class="antd_table select-table">
@@ -106,9 +106,8 @@
             <span slot="is_popular" slot-scope="text">
               <a-checkbox @change="onChangeCheckbox(text)" :checked="text == 1" />
             </span>
-          </a-table> 
+          </a-table>
           <div class="d-flex justify-content-end mt-4" v-if="totalPage > params.pageSize">
-    
             <a-pagination
               class="table-pagination"
               :simple="false"
@@ -200,66 +199,89 @@ export default {
       });
       this.loading = false;
       this.totalPage = data.categories?.total;
-      this.categories = data.categories?.data.map((item, index) => {
-        let newChild = [];
-        let newChild2 = [];
-        if (item.children) {
-          newChild = item.children.map((childItem, index1) => {
-            if (childItem.children.length > 0) {
-              newChild2 = childItem.children.map((lastChild, index2) => {
-                return {
-                  ...lastChild,
-                  key: (index + 1) * 100 + (index1 + 1) * 10 + (index2 + 1),
-                  dataName: {
-                    name: lastChild.name,
-                    img: lastChild.sm_img,
-                  },
-                };
-              });
-              return {
-                key: (index1 + 1) * 1 + (index + 1) * 10,
-                ...childItem,
-                dataName: {
-                  name: childItem.name,
-                  img: childItem.sm_img,
-                  child: childItem.children.length,
-                },
-                children: [...newChild2],
-              };
-            } else {
-              newChild2 = [];
-              return {
-                key: (index1 + 1) * 1 + (index + 1) * 10,
-                ...childItem,
-                dataName: {
-                  name: childItem.name,
-                  img: childItem.sm_img,
-                },
-              };
-            }
-          });
-          return {
-            key: index * 1 + 1,
-            ...item,
-            dataName: {
-              name: item.name,
-              img: item.sm_img,
-              child: item.children.length,
-            },
-            children: [...newChild],
-          };
-        } else {
-          newChild = [];
-          return {
-            key: index * 1 + 1,
-            ...item,
-            dataName: {
-              name: item.name,
-              img: item.sm_img,
-            },
-          };
-        }
-      });
+      // this.categories = data.categories?.data.map((item, index) => {
+      //   let newChild = [];
+      //   let newChild2 = [];
+      //   if (item.children) {
+      //     newChild = item.children.map((childItem, index1) => {
+      //       if (childItem.children.length > 0) {
+      //         newChild2 = childItem.children.map((lastChild, index2) => {
+      //           return {
+      //             ...lastChild,
+      //             key: (index + 1) * 100 + (index1 + 1) * 10 + (index2 + 1),
+      //             dataName: {
+      //               name: lastChild.name,
+      //               img: lastChild.sm_img,
+      //             },
+      //           };
+      //         });
+      //         return {
+      //           key: (index1 + 1) * 1 + (index + 1) * 10,
+      //           ...childItem,
+      //           dataName: {
+      //             name: childItem.name,
+      //             img: childItem.sm_img,
+      //             child: childItem.children.length,
+      //           },
+      //           children: [...newChild2],
+      //         };
+      //       } else {
+      //         newChild2 = [];
+      //         return {
+      //           key: (index1 + 1) * 1 + (index + 1) * 10,
+      //           ...childItem,
+      //           dataName: {
+      //             name: childItem.name,
+      //             img: childItem.sm_img,
+      //           },
+      //         };
+      //       }
+      //     });
+      //     return {
+      //       key: index * 1 + 1,
+      //       ...item,
+      //       dataName: {
+      //         name: item.name,
+      //         img: item.sm_img,
+      //         child: item.children.length,
+      //       },
+      //       children: [...newChild],
+      //     };
+      //   } else {
+      //     newChild = [];
+      //     return {
+      //       key: index * 1 + 1,
+      //       ...item,
+      //       dataName: {
+      //         name: item.name,
+      //         img: item.sm_img,
+      //       },
+      //     };
+      //   }
+      // });
+      let keyCounter = 1;
+      function transformCategory(item, index) {
+        const newChild = item.children
+          ? item.children.map((childItem, index1) =>
+              transformCategory(childItem, index1 + 1)
+            )
+          : [];
+
+        return {
+          key: keyCounter++,
+          ...item,
+          dataName: {
+            name: item.name,
+            img: item.sm_img,
+            child: item.children ? item.children.length : 0,
+          },
+          children: newChild,
+        };
+      }
+
+      this.categories = data.categories?.data.map((item, index) =>
+        transformCategory(item, index)
+      );
     },
     deleteCategory(id) {
       this.__DELETE_GLOBAL(

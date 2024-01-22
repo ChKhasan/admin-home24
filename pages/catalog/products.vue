@@ -329,7 +329,6 @@ export default {
   },
   async mounted() {
     this.getFirstData("/catalog/products", "__GET_PRODUCTS");
-    
   },
   watch: {
     async current(val) {

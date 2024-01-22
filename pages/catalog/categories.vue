@@ -6,7 +6,7 @@
           class="add-btn add-header-btn add-header-btn-padding btn-primary"
           @click="$router.push('/catalog/add_category')"
         >
-          <span class="svg-icon" v-html="addIcon"></span>
+          <!-- <span class="svg-icon" v-html="addIcon"></span> -->
           Добавить категорию
         </div>
       </div>

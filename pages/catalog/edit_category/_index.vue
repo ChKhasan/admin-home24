@@ -566,7 +566,7 @@ export default {
         },
         slug: "",
       },
-      attributes: [{ name: "", id: 1 }],
+      attributes: [{ name: "cOLOR", id: 1 }],
       group_characteristics: [{ name: "", id: 1 }],
       categoryChild: [],
       previewVisible: false,
@@ -792,6 +792,7 @@ export default {
       const data = await this.$store.dispatch("fetchAtributes/getAllAtributes");
       this.atributes = data.attributes;
       this.allAtributes = data.attributes;
+     
       this.filterElement("attributes");
     },
     async __GET_GROUPS() {
@@ -802,15 +803,28 @@ export default {
     },
 
     async __GET_CATEGORIES() {
-      const dataCat = await this.$store.dispatch("fetchCategories/getCategories");
-      dataCat.categories?.data.forEach((item) => {
-        if (item.children.length > 0) {
-          this.categories = [item, ...item.children, ...this.categories];
-        } else {
-          this.categories = [item, ...this.categories];
+      const data = await this.$store.dispatch("fetchCategories/getCategories");
+      // dataCat.categories?.data.forEach((item) => {
+      //   if (item.children.length > 0) {
+      //     this.categories = [item, ...item.children, ...this.categories];
+      //   } else {
+      //     this.categories = [item, ...this.categories];
+      //   }
+      // });
+      function flattenCategories(category) {
+        let result = [category];
+        if (category.children && category.children.length > 0) {
+          category.children.forEach((child) => {
+            result = result.concat(flattenCategories(child));
+          });
         }
-      });
 
+        return result;
+      }
+
+      data.categories?.data.forEach((item) => {
+        this.categories = this.categories.concat(flattenCategories(item));
+      });
       this.categories = this.categories
         .filter((elem) => elem.id != this.$route.params.index)
         .filter((item) => !this.categoryChild.find((childId) => childId.id == item.id));

@@ -329,6 +329,15 @@
   > td {
   // background: #fff !important;
 }
+// .ant-table-row-collapsed,
+//   .ant-table-row-expanded {
+//     position: absolute;
+//     width: 100% !important;
+//     height: 100% !important;
+//     left: 40px;
+//     top: 0;
+//     opacity: 0;
+//   }
 .ant-table-row-cell-break-word {
   position: relative;
   .ant-table-row-collapsed,
@@ -362,7 +371,7 @@
 .ant-table-row-level-1 {
   background: #f5f5f7;
   .column-name {
-    padding-left: 45px !important;
+    // padding-left: 45px !important;
     position: relative;
     border: none !important;
     .ant-table-row-collapsed,
@@ -396,19 +405,31 @@
     border-bottom: 1px solid #eeeeee !important;
   }
 }
+.ant-table-row {
+  position: relative;
+  .ant-table-row-collapsed,
+  .ant-table-row-expanded {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+}
 .ant-table-row-level-2 {
   background: #fafbfc;
   .indent-level-2 {
-    display: flex;
-    position: absolute;
-    top: 0;
-    padding: 0 !important;
-    left: 45px;
-    height: 100%;
-    border-left: 1px solid #eeeeee !important;
+    // display: flex;
+    // position: absolute;
+    // top: 0;
+    // padding: 0 !important;
+    // left: 45px;
+    // height: 100%;
+    // border-left: 1px solid #eeeeee !important;
   }
   .column-name {
-    padding-left: 108px !important;
+    // padding-left: 108px !important;
     border: none !important;
     .ant-table-row-collapsed,
     .ant-table-row-expanded {

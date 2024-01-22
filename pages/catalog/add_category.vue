@@ -1,10 +1,6 @@
 <template lang="html">
   <div>
-    <TitleBlock
-      title="Категории"
-      :breadbrumb="['Каталог']"
-      lastLink="Категории"
-    >
+    <TitleBlock title="Категории" :breadbrumb="['Каталог']" lastLink="Категории">
       <div class="d-flex">
         <span class="mx-3">
           <LayoutHeaderBtn
@@ -36,11 +32,7 @@
             action=""
           >
             <div class="category-select-grid">
-              <el-tabs
-                class="form_tabs"
-                v-model="activeName"
-                @tab-click="handleClick"
-              >
+              <el-tabs class="form_tabs" v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane
                   v-for="(item, index) in lang"
                   :label="item.label"
@@ -54,10 +46,7 @@
 
                     <div class="category-input-grid">
                       <div class="form-block required mb-0">
-                        <el-form-item
-                          :prop="`name.ru`"
-                          label="Название категории"
-                        >
+                        <el-form-item :prop="`name.ru`" label="Название категории">
                           <el-input
                             v-model="ruleForm.name[item.key]"
                             placeholder="Название категории..."
@@ -65,10 +54,7 @@
                         </el-form-item>
                       </div>
                       <div class="form-block required">
-                        <el-form-item
-                          prop="choose_category"
-                          label="Выберите категорию"
-                        >
+                        <el-form-item prop="choose_category" label="Выберите категорию">
                           <el-select
                             v-model="ruleForm.parent_id"
                             class="w-100"
@@ -119,7 +105,7 @@
                         <drag class="item d-flex mb-3" :key="item.id">
                           <div class="form-block required w-100 mb-0">
                             <el-form-item>
-                              <el-select
+                              <!-- <el-select
                                 v-model="item.name"
                                 class="w-100"
                                 @change="filterElement('attributes')"
@@ -135,11 +121,51 @@
                                   :value="item.id"
                                 >
                                 </el-option>
+                              </el-select> -->
+                              <el-select
+                                v-model="item.name.ru"
+                                v-if="item.id == 1"
+                                :disabled="item.id == 1"
+                                class="w-100"
+                                @change="filterElement('attributes')"
+                                popper-class="select-popper-hover"
+                                default-first-option
+                                no-data-text="No atribut"
+                                placeholder="Выберите атрибут"
+                              >
+                                <el-option
+                                  v-for="item in atributes"
+                                  :key="item.id"
+                                  :label="item.name.ru"
+                                  :value="item.id"
+                                >
+                                </el-option>
+                              </el-select>
+                              <el-select
+                                v-model="item.name"
+                                class="w-100"
+                                v-else
+                                @change="filterElement('attributes')"
+                                popper-class="select-popper-hover"
+                                default-first-option
+                                no-data-text="No atribut"
+                                placeholder="Выберите атрибут"
+                              >
+                                <el-option
+                                  v-for="item in [
+                                    ...atributes.filter((item) => item.id != 1),
+                                  ]"
+                                  :key="item.id"
+                                  :label="item.name.ru"
+                                  :value="item.id"
+                                >
+                                </el-option>
                               </el-select>
                             </el-form-item>
                           </div>
                           <div class="variant_btns mb-1 mt-0">
                             <div
+                              v-if="item.name != 1"
                               class="variant-btn variant-btn-delete mx-2"
                               @click="deleteElement('attributes', item.id)"
                             >
@@ -194,9 +220,7 @@
                     </div>
                     <drop-list
                       :items="group_characteristics"
-                      @insert="
-                        ($event) => onInsert($event, 'group_characteristics')
-                      "
+                      @insert="($event) => onInsert($event, 'group_characteristics')"
                       @reorder="$event.apply(group_characteristics)"
                     >
                       <template v-slot:item="{ item }">
@@ -225,9 +249,7 @@
                           <div class="variant_btns mb-1 mt-0">
                             <div
                               class="variant-btn variant-btn-delete mx-2"
-                              @click="
-                                deleteElement('group_characteristics', item.id)
-                              "
+                              @click="deleteElement('group_characteristics', item.id)"
                             >
                               <svg
                                 width="30"
@@ -314,9 +336,7 @@
               <FormTitle title="Параметры" />
               <div
                 class="form-block status-style"
-                :class="[
-                  ruleForm.is_active == 1 ? 'status-active' : 'status-inactive',
-                ]"
+                :class="[ruleForm.is_active == 1 ? 'status-active' : 'status-inactive']"
               >
                 <div><label>Статус</label></div>
                 <el-select
@@ -343,9 +363,7 @@
                   type="number"
                 ></el-input>
               </div>
-              <div
-                class="switch-text form-block d-flex flex-row align-items-center"
-              >
+              <div class="switch-text form-block d-flex flex-row align-items-center">
                 <a-switch @change="onChange" />
                 <label class="mx-3 mb-0">Популярный</label>
               </div>
@@ -371,20 +389,13 @@
                     :footer="null"
                     @cancel="handleCancel"
                   >
-                    <img
-                      alt="example"
-                      style="width: 100%"
-                      :src="previewImage"
-                    />
+                    <img alt="example" style="width: 100%" :src="previewImage" />
                   </a-modal>
                 </div>
               </div>
               <div class="form-block">
                 <div><label>Svg</label></div>
-                <el-input
-                  v-model="ruleForm.icon_svg"
-                  placeholder="Svg"
-                ></el-input>
+                <el-input v-model="ruleForm.icon_svg" placeholder="Svg"></el-input>
               </div>
               <div class="form-block">
                 <div><label for="">Добавить значок продукта</label></div>
@@ -408,11 +419,7 @@
                     :footer="null"
                     @cancel="handleCancel"
                   >
-                    <img
-                      alt="example"
-                      style="width: 100%"
-                      :src="previewImage"
-                    />
+                    <img alt="example" style="width: 100%" :src="previewImage" />
                   </a-modal>
                 </div>
               </div>
@@ -475,7 +482,7 @@ export default {
         icon: [],
       },
       lang: [
-          {
+        {
           key: "uz",
           label: "Uzbek",
         },
@@ -541,7 +548,7 @@ export default {
         is_active: 1,
         icon_svg: "",
       },
-      attributes: [{ name: "", id: 1 }],
+      attributes: [],
       group_characteristics: [{ name: "", id: 1 }],
       previewVisible: false,
       previewImage: "",
@@ -589,9 +596,7 @@ export default {
       const data = {
         ...this.ruleForm,
         attributes: this.attributes.map((item) => item.name),
-        group_characteristics: this.group_characteristics.map(
-          (item) => item.name
-        ),
+        group_characteristics: this.group_characteristics.map((item) => item.name),
       };
 
       delete data["status"];
@@ -630,8 +635,8 @@ export default {
       this.groups = allGr;
     },
     deleteElement(type, id) {
-      if (this[type].length > 1)
-        this[type] = this[type].filter((item) => item.id != id);
+      if (this[type].length > 1) this[type] = this[type].filter((item) => item.id != id);
+      this.filterElement(type)
     },
 
     handleCancel() {
@@ -649,8 +654,7 @@ export default {
     },
     async handleChange({ fileList }, type) {
       this.fileList[type] = fileList;
-      if (fileList[0]?.response?.path)
-        this.ruleForm[type] = fileList[0]?.response?.path;
+      if (fileList[0]?.response?.path) this.ruleForm[type] = fileList[0]?.response?.path;
     },
     handleClick(tab, event) {
       this.formVal = "";
@@ -663,18 +667,33 @@ export default {
     },
     async __GET_CATEGORIES() {
       const data = await this.$store.dispatch("fetchCategories/getCategories");
-      data.categories?.data.forEach((item) => {
-        if (item.children.length > 0) {
-          this.categories = [...this.categories, item, ...item.children];
-        } else {
-          this.categories = [...this.categories, item];
+      function flattenCategories(category) {
+        let result = [category];
+        if (category.children && category.children.length > 0) {
+          category.children.forEach((child) => {
+            result = result.concat(flattenCategories(child));
+          });
         }
+
+        return result;
+      }
+
+      data.categories?.data.forEach((item) => {
+        this.categories = this.categories.concat(flattenCategories(item));
       });
+      // data.categories?.data.forEach((item) => {
+      //   if (item.children.length > 0) {
+      //     this.categories = [...this.categories, item, ...item.children];
+      //   } else {
+      //     this.categories = [...this.categories, item];
+      //   }
+      // });
     },
     async __GET_ATRIBUTES() {
       const data = await this.$store.dispatch("fetchAtributes/getAtributes");
       this.atributes = data.attributes?.data;
       this.allAtributes = data.attributes?.data;
+      this.attributes.push(data.attributes?.data.find((elem) => elem.id == 1));
     },
     async __GET_GROUPS() {
       const data = await this.$store.dispatch("fetchCharacters/getGroups");

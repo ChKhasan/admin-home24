@@ -281,6 +281,7 @@
               </div>
               <div class="variant-img-container">
                 <h5 class="variant-img-title">Изображение товара</h5>
+                {{ color_options }}
 
                 <div class="variant-img">
                   <div class="list2">
@@ -1625,19 +1626,22 @@ export default {
       });
     },
     colorOptionsFilter() {
-      this.color_options = this.atributes
+      let all_color_options = this.atributes
         .find((colorItem) => colorItem?.name.ru == "Цвет")
         ?.options.map((item) => item.id);
+      this.color_options = all_color_options;
       if (
         this.atributes.length > 0 &&
         Object.values(this.ruleForm.products[0].variations[0].optionName).length > 0
       ) {
-        this.color_options = this.color_options.filter(
+        this.color_options = all_color_options.filter(
           (elem) =>
             !this.ruleForm.products.find(
               (item) =>
-                (item.variations.at(-1).is_combs.length > 0 &&
-                  item.variations.at(-1).is_combs[0][0]) == elem
+                item.variations.at(-1).is_combs.length > 0 &&
+                item.variations.at(-1).is_combs.at(-1)[0] ==
+                  item.variations.at(-1).is_combs[0][0] &&
+                item.variations.at(-1).is_combs[0][0] == elem
             )
         );
       }

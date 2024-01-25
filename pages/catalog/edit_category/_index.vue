@@ -167,6 +167,7 @@
                               </svg>
                             </div>
                             <div
+                              v-if="item.name != 1"
                               class="variant-btn variant-btn-check cursor_drag ml-2"
                               draggable="true"
                             >
@@ -792,7 +793,7 @@ export default {
       const data = await this.$store.dispatch("fetchAtributes/getAllAtributes");
       this.atributes = data.attributes;
       this.allAtributes = data.attributes;
-     
+
       this.filterElement("attributes");
     },
     async __GET_GROUPS() {

@@ -165,7 +165,7 @@
                           </div>
                           <div class="variant_btns mb-1 mt-0">
                             <div
-                              v-if="item.name != 1"
+                              v-if="item.id != 1"
                               class="variant-btn variant-btn-delete mx-2"
                               @click="deleteElement('attributes', item.id)"
                             >
@@ -186,6 +186,7 @@
                               </svg>
                             </div>
                             <div
+                              v-if="item.id != 1"
                               class="variant-btn variant-btn-check cursor_drag"
                               draggable="true"
                             >
@@ -636,7 +637,7 @@ export default {
     },
     deleteElement(type, id) {
       if (this[type].length > 1) this[type] = this[type].filter((item) => item.id != id);
-      this.filterElement(type)
+      this.filterElement(type);
     },
 
     handleCancel() {

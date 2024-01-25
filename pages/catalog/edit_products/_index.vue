@@ -1985,16 +1985,56 @@ export default {
     },
     colorOptionsFilter() {
       if (this.atributes.length > 0) {
-        this.color_options = this.atributes
+        // this.color_options = this.atributes
+        //   .find((colorItem) => colorItem?.name.ru == "Цвет")
+        //   ?.options.map((item) => item.id);
+
+        // this.color_options = this.color_options.filter(
+        //   (elem) =>
+        //     !this.ruleForm.products.find(
+        //       (item) =>
+        //         (item.variations.at(-1).is_combs.length > 0 &&
+        //           item.variations.at(-1).is_combs[0][0]) == elem
+        //     )
+        // );
+        let all_color_options = this.atributes
           .find((colorItem) => colorItem?.name.ru == "Цвет")
           ?.options.map((item) => item.id);
-
-        this.color_options = this.color_options.filter(
+        this.color_options = all_color_options;
+        if (
+          this.atributes.length > 0 &&
+          Object.values(this.ruleForm.products[0].variations[0].optionName).length > 0
+        ) {
+          this.color_options = all_color_options.filter(
+            (elem) =>
+              !this.ruleForm.products.find(
+                (item) =>
+                  item.variations.at(-1).is_combs.length > 0 &&
+                  item.variations.at(-1).is_combs.at(-1)[0] ==
+                    item.variations.at(-1).is_combs[0][0] &&
+                  item.variations.at(-1).is_combs[0][0] == elem
+              )
+          );
+        }
+      }
+    },
+    colorOptionsFilter() {
+      let all_color_options = this.atributes
+        .find((colorItem) => colorItem?.name.ru == "Цвет")
+        ?.options.map((item) => item.id);
+      this.color_options = all_color_options;
+      if (
+        this.atributes.length > 0 &&
+        Object.values(this.ruleForm.products[0].variations[0].optionName).length > 0
+      ) {
+        this.color_options = all_color_options.filter(
           (elem) =>
             !this.ruleForm.products.find(
               (item) =>
-                (item.variations.at(-1).is_combs.length > 0 &&
-                  item.variations.at(-1).is_combs[0][0]) == elem
+                item.variations.at(-1).is_combs.length > 0 &&
+                item.variations.at(-1).is_combs.at(-1)[0] ==
+                  item.variations.at(-1).is_combs[0][0] &&
+                item.variations.at(-1).is_combs[0][0] == elem
             )
         );
       }
@@ -2111,6 +2151,7 @@ export default {
       const newVariations = await [
         {
           id: 1,
+          indexId: 0,
           is_combs: this.combinationsAtr,
           stock: 1,
           options: [1],

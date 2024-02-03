@@ -112,7 +112,10 @@ export default {
         await this.$store.dispatch(link, id);
         this.notification("Success", message, "success");
         this[data]();
+        console.log("iinner");
       } catch (e) {
+        console.log("catcg");
+
         this.statusFunc(e.response);
       }
     },

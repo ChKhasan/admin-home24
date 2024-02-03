@@ -347,7 +347,12 @@ export default {
         this.notification("Success","Атрибут успешно добавлен","success")
         this.$router.push("/catalog/atributs");
       } catch (e) {
-        this.statusFunc(e.response);
+        if(e.response.status == 422) {
+          this.notification("Error",Object.values(e.response.data.errors)[0],"error")
+        } else {
+          this.statusFunc(e.response);
+        }
+
       }
     },
   },

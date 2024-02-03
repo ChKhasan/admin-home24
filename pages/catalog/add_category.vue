@@ -594,25 +594,33 @@ export default {
       this[elem].splice(event.index, 0, event.data);
     },
     submitForm(ruleForm) {
+      console.log(this.attributes);
       const data = {
         ...this.ruleForm,
-        attributes: this.attributes.map((item) => item.name),
-        group_characteristics: this.group_characteristics.map((item) => item.name),
+        attributes: this.attributes.map((item) =>
+          typeof item.name == "number" ? item.name : item.id
+        ),
+        group_characteristics: this.group_characteristics
+          .map((item) => item.name)
+          .filter((elem) => elem),
       };
 
       delete data["status"];
       this.$refs[ruleForm].validate((valid) => {
-        if (valid) {
-          if (!this.attributes[0].name || !this.group_characteristics[0].name) {
-            !this.attributes[0].name
-              ? this.notificationError("Error", "Вы не добавили атрибут")
-              : this.notificationError("Error", "Вы не добавили группу");
-          } else {
-            this.__POST_CATEGORIES(data);
-          }
-        } else {
-          return false;
-        }
+        if (!valid) return false;
+        console.log(data);
+        // this.__POST_CATEGORIES(data);
+        // if (valid) {
+        //   if (!this.attributes[0].name || !this.group_characteristics[0].name) {
+        //     !this.attributes[0].name
+        //       ? this.notificationError("Error", "Вы не добавили атрибут")
+        //       : this.notificationError("Error", "Вы не добавили группу");
+        //   } else {
+        //     this.__POST_CATEGORIES(data);
+        //   }
+        // } else {
+        //   return false;
+        // }
       });
     },
     addElement(type) {

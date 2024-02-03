@@ -661,7 +661,9 @@ export default {
       const data = {
         ...this.ruleForm,
         attributes: this.attributes.map((item) => item.name),
-        group_characteristics: this.group_characteristics.map((item) => item.name),
+        group_characteristics: this.group_characteristics
+          .map((item) => item.name)
+          .filter((elem) => elem),
       };
       if (this.fileList.img[0]?.oldImg) {
         data.img = this.fileList.img[0]?.url;

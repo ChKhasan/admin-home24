@@ -54,32 +54,24 @@ export const actions = {
     }
   },
   async postCharacteristics({}, data) {
-    try {
-      const res = await this.$axios.$post(`/characteristics`, data, {
+    const res = await this.$axios.$post(`/characteristics`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+    return res;
+  },
+  async editCharacteristics({}, payload) {
+    const res = await this.$axios.$put(
+      `/characteristics/${payload.id}`,
+      payload.data,
+      {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
         },
-      });
-      return res;
-    } catch (e) {
-      return e.response;
-    }
-  },
-  async editCharacteristics({}, payload) {
-    try {
-      const res = await this.$axios.$put(
-        `/characteristics/${payload.id}`,
-        payload.data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-        }
-      );
-      return res;
-    } catch (e) {
-      return e.response;
-    }
+      }
+    );
+    return res;
   },
   async deleteCharacteristics({}, id) {
     try {

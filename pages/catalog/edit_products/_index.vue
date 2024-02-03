@@ -364,15 +364,15 @@
                         action=""
                       >
                         <div class="d-flex flex-column w-100">
+                          <el-form-item prop="name" class="form-variant-block mb-0">
+                            <el-input placeholder="Имя (RU)" v-model="item.name.ru" />
+                          </el-form-item>
                           <el-form-item
                             prop="name"
                             label="Имя "
                             class="form-variant-block mb-0"
                           >
                             <el-input placeholder="Имя (UZ)" v-model="item.name.uz" />
-                          </el-form-item>
-                          <el-form-item prop="name" class="form-variant-block mb-0">
-                            <el-input placeholder="Имя (RU)" v-model="item.name.ru" />
                           </el-form-item>
                         </div>
 

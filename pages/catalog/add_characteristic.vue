@@ -281,7 +281,7 @@ export default {
         this.$router.push("/catalog/characteristic_groups");
       } catch (e) {
         if(e.response.status == 422) {
-          this.notification("Error",Object.values(e.response.data.errors)[0],"error")
+          this.notification("Error",Object.values(e.response.data.errors)[0][0],"error")
         } else {
           this.statusFunc(e.response);
         }

@@ -340,7 +340,11 @@ export default {
         this.notification("Success", "Характеристика успешно изменена", "success");
         this.$router.push("/catalog/characteristic_groups");
       } catch (e) {
-        this.statusFunc(e.response);
+        if(e.response.status == 422) {
+          this.notification("Error",Object.values(e.response.data.errors)[0][0],"error")
+        } else {
+          this.statusFunc(e.response);
+        }
       }
     },
     toBack() {

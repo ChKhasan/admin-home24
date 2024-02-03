@@ -608,8 +608,8 @@ export default {
       delete data["status"];
       this.$refs[ruleForm].validate((valid) => {
         if (!valid) return false;
-        console.log(data);
-        // this.__POST_CATEGORIES(data);
+        // console.log(data);
+        this.__POST_CATEGORIES(data);
         // if (valid) {
         //   if (!this.attributes[0].name || !this.group_characteristics[0].name) {
         //     !this.attributes[0].name

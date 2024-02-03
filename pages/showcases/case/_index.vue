@@ -334,7 +334,7 @@ export default {
       this.options = [];
       if (value.length > 2) {
         this.fetching = true;
-        const data = await this.$store.dispatch("fetchProducts/getProducts", {
+        const data = await this.$store.dispatch("fetchProducts/getPShowcaseSearch", {
           search: value,
         });
         this.options = data?.products?.data;

@@ -8,6 +8,15 @@ export const actions = {
     });
     return res;
   },
+  async getPShowcaseSearch({}, payload) {
+    const res = await this.$axios.$get(`/products_variations/search`, {
+      params: payload,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+    return res;
+  },
   async getProductsSearch({}, payload) {
     const res = await this.$axios.$get(`/products/get_undone_variations`, {
       params: payload,

@@ -210,10 +210,11 @@ import TitleBlock from "../../../components/Title-block.vue";
 import LayoutHeaderBtn from "../../../components/form/Layout-header-btn.vue";
 import { Drag, DropList } from "vue-easy-dnd";
 import authAccess from "@/mixins/authAccess";
+import status from "@/mixins/status";
 
 export default {
   layout: "toolbar",
-  mixins: [authAccess],
+  mixins: [authAccess,status],
   data() {
     return {
       colorPickerHide: true,

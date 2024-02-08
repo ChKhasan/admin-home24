@@ -653,7 +653,7 @@ export default {
       this.groups = allGr;
     },
     deleteElement(type, id) {
-      if (this[type].length > 1) this[type] = this[type].filter((item) => item.id != id);
+      this[type] = this[type].filter((item) => item.id != id);
       this.filterElement("attributes");
       this.filterElement("group_characteristics");
     },

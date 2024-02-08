@@ -90,7 +90,7 @@
               >
                 <img :src="editIcon" alt="" />
               </span>
-              <a-popconfirm
+              <!-- <a-popconfirm
                 v-if="checkAccess('categories', 'DELETE')"
                 title="Are you sure delete this category?"
                 ok-text="Yes"
@@ -101,7 +101,7 @@
                 <span class="action-btn">
                   <img :src="deleteIcon" alt="" />
                 </span>
-              </a-popconfirm>
+              </a-popconfirm> -->
             </span>
             <span slot="is_popular" slot-scope="text">
               <a-checkbox @change="onChangeCheckbox(text)" :checked="text == 1" />

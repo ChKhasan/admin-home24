@@ -626,7 +626,7 @@ export default {
     addElement(type) {
       this[type].push({
         name: "",
-        id: Math.max(...this[type].map((o) => o.id)) + 1,
+        id: this[type].length > 0 ? Math.max(...this[type].map((o) => o.id)) + 1 : 1,
       });
     },
 
@@ -644,7 +644,7 @@ export default {
       this.groups = allGr;
     },
     deleteElement(type, id) {
-      if (this[type].length > 1) this[type] = this[type].filter((item) => item.id != id);
+   this[type] = this[type].filter((item) => item.id != id);
       this.filterElement(type);
     },
 

@@ -360,10 +360,14 @@
                           action=""
                         >
                           <div class="d-flex flex-column w-100">
-                            <el-form-item label="Имя " prop="name" class="form-variant-block mb-0">
+                            <el-form-item
+                              label="Имя "
+                              prop="name"
+                              class="form-variant-block mb-0"
+                            >
                               <el-input placeholder="Имя (RU)" v-model="item.name.ru" />
                             </el-form-item>
-                            <el-form-item  class="form-variant-block mb-0">
+                            <el-form-item class="form-variant-block mb-0">
                               <el-input placeholder="Имя (UZ)" v-model="item.name.uz" />
                             </el-form-item>
                           </div>
@@ -1469,6 +1473,8 @@ export default {
             ? this.__POST_PRODUCTS(newData)
             : this.notification("Required", "Product image is required", "error");
         } else {
+          if (!atributValid)
+            this.notification("Required", "Product attributes is required", "error");
           return false;
         }
       });

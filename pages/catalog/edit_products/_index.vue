@@ -1661,6 +1661,8 @@ export default {
             imagesCount.length == newData.products.length
               ? this.__POST_PRODUCTS(newData)
               : this.notification("Required", "Product image is required", "error");
+          } else {
+            this.notification("Required", "Product attributes is required", "error");
           }
         } else {
           return false;

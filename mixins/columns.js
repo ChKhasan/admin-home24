@@ -178,7 +178,6 @@ export default {
           colSpan: 2,
         },
         {
-          dataIndex: "name",
           key: "name",
           slots: { title: "customTitle" },
           scopedSlots: { customRender: "name" },

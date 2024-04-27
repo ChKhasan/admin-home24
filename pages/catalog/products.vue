@@ -96,7 +96,7 @@
             /> -->
           </span>
           <div slot="name" slot-scope="text">
-            <h6>{{ text?.name?.ru }}</h6>
+            <nuxt-link :to="`/catalog/edit_products/${text?.id}`">{{ text?.name?.name?.ru }}</nuxt-link>
             <span
               >{{
                 text?.category?.parent?.parent &&

@@ -74,7 +74,7 @@
                 <el-select
                   multiple
                   class="w-100"
-                  placeholder="Status"
+                  placeholder="Permissions"
                   default-first-option
                   v-model="ruleForm.permissions"
                 >
@@ -101,7 +101,7 @@
               <el-select
                 multiple
                 class="w-100"
-                placeholder="Status"
+                placeholder="Permissions group"
                 default-first-option
                 v-model="ruleForm.permission_groups"
               >

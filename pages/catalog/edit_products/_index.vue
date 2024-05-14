@@ -500,7 +500,7 @@
                             :key="d.id"
                             :value="d?.id"
                           >
-                            {{ d?.short_name?.ru }}
+                            {{ d?.name?.ru }}
                           </a-select-option>
                         </a-select>
                       </el-form-item>

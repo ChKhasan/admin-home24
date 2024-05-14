@@ -441,7 +441,7 @@ export default {
       this.data = [];
       this.fetching = true;
       if (this.ruleForm.type == "product") {
-        const data = await this.$store.dispatch("fetchProducts/getProducts", {
+        const data = await this.$store.dispatch("fetchProducts/getPShowcaseSearch", {
           search: value,
         });
         this.data = data?.products?.data;
@@ -461,6 +461,7 @@ export default {
       this.ruleForm.products.find((item) => item.id == id).real_price = this.data.find(
         (item) => item.id == id
       ).real_price;
+      console.log(this.ruleForm,this.data)
       Object.assign(this, {
         fetching: false,
       });

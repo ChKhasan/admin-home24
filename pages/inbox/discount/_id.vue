@@ -67,7 +67,7 @@
                       <div class="form-block required mb-0">
                         <el-form-item label="Сумма">
                           <el-input
-                            :disabled="!ruleForm.products[0].price"
+                            :disabled="!ruleForm.products[0]?.price"
                             v-model="amount"
                             type="number"
                             placeholder="Сумма(в сумах)"
@@ -162,7 +162,7 @@
                 >
                   <a-spin v-if="fetching" slot="notFoundContent" size="small" />
                   <a-select-option v-for="d in data" :key="d.id">
-                    {{ d.name.ru }}
+                    {{ d?.info?.category?.name.ru }} => {{ d.name.ru }}
                   </a-select-option>
                 </a-select>
               </el-form-item>
@@ -468,7 +468,7 @@ export default {
       this.data = [];
       this.fetching = true;
       if (this.ruleForm.type == "product") {
-        const data = await this.$store.dispatch("fetchProducts/getProducts", {
+        const data = await this.$store.dispatch("fetchProducts/getPShowcaseSearch", {
           search: value,
         });
         this.data = data?.products?.data;

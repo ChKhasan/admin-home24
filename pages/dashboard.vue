@@ -418,6 +418,7 @@ export default {
       });
       this.__GET_DASHBOARD();
       this.visible = false;
+      console.log("1");
     },
     handleOk() {
       this.visible = false;

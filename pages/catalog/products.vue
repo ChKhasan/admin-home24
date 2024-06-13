@@ -96,7 +96,9 @@
             /> -->
           </span>
           <div slot="name" slot-scope="text">
-            <nuxt-link :to="`/catalog/edit_products/${text?.id}`">{{ text?.name?.name?.ru }}</nuxt-link>
+            <nuxt-link :to="`/catalog/edit_products/${text?.id}`">{{
+              text?.name?.name?.ru
+            }}</nuxt-link>
             <span
               >{{
                 text?.category?.parent?.parent &&
@@ -156,6 +158,36 @@
           />
         </div>
       </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap">
+      <a
+        href="/media/uploads/2024/06/03/certificate-83976-0.jpg"
+        style="flex: 1; margin: 7.5px; max-width: calc(50% - 15px)"
+        ><img alt="" src="/media/uploads/2024/06/03/certificate-83976-0.jpg" />
+      </a>
+      <a
+        href="/media/uploads/2024/06/04/guvohnoma_PK6T2fF.jpg"
+        style="flex: 1; margin: 7.5px; max-width: calc(50% - 15px)"
+      >
+        <img src="/media/uploads/2024/06/11/rus.jpg" />
+      </a>
+      <a
+        href="/media/uploads/2024/06/04/guvohnoma_PK6T2fF.jpg"
+        style="flex: 1; margin: 7.5px; max-width: calc(33% - 15px)"
+      >
+        <img src="/media/uploads/2024/06/04/guvohnoma_PK6T2fF.jpg" />
+      </a>
+      <a
+        href="/media/uploads/2024/06/04/centre-aproval-othm_EfROW79.jpg"
+        style="flex: 1; margin: 7.5px; max-width: calc(33% - 15px)"
+      >
+        <img src="/media/uploads/2024/06/04/centre-aproval-othm_EfROW79.jpg" />
+      </a>
+      <a href="/media/uploads/2024/06/11/uzb-0.jpg"
+        ><img
+          src="/media/uploads/2024/06/11/uzb-0.jpg"
+          style="flex: 1; margin: 7.5px; max-width: calc(33% - 15px)"
+      /></a>
     </div>
   </div>
 </template>

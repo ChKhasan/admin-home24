@@ -52,6 +52,15 @@
                   </el-form-item>
                 </div>
                 <div class="form-block">
+                  <el-form-item prop="email" label="Расположение">
+                    <el-input
+                      v-model="ruleForm.location[item.key]"
+                      placeholder="Расположение..."
+                      type="email"
+                    ></el-input>
+                  </el-form-item>
+                </div>
+                <div class="form-block">
                   <el-form-item prop="email" label="Электронная почта">
                     <el-input
                       v-model="ruleForm.email"
@@ -107,6 +116,7 @@
                     ></el-input>
                   </el-form-item>
                 </div>
+              <div class="d-flex">
                 <div class="form-block">
                   <div><label for="">Логотип</label></div>
                   <div class="clearfix variant-img">
@@ -159,6 +169,33 @@
                     </a-modal>
                   </div>
                 </div>
+                <div class="form-block">
+                  <div><label for="">QR code</label></div>
+                  <div class="clearfix variant-img">
+                    <a-upload
+                      action="https://api.home24.uz/api/admin/files/upload"
+                      :headers="headers"
+                      list-type="picture-card"
+                      :file-list="fileList2"
+                      :multiple="true"
+                      @preview="handlePreview"
+                      @change="($event) => handleChange($event, 'qr_code')"
+                    >
+                      <div v-if="fileList2.length < 1">
+                        <span v-html="addImgIcon"></span>
+                        <div class="ant-upload-text">Добавить QR code</div>
+                      </div>
+                    </a-upload>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancel"
+                    >
+                      <img alt="example" style="width: 100%" :src="previewImage" />
+                    </a-modal>
+                  </div>
+                </div>
+              </div>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -204,6 +241,7 @@ export default {
       previewImage: "",
       fileList: [],
       fileList1: [],
+      fileList2: [],
       uploadLoading: false,
       rules: {
         phone_number: [
@@ -228,7 +266,12 @@ export default {
         favicon: "",
         telegram: "",
         instagram: "",
+        qr_code: "",
         meta_desc: {
+          ru: "",
+          uz: "",
+        },
+        location: {
           ru: "",
           uz: "",
         },
@@ -269,22 +312,25 @@ export default {
       try {
         const data = await this.$store.dispatch("fetchSiteInfo/getSiteInfo");
         const { created_at, id, updated_at, ...rest } = data.info;
-        this.ruleForm = {
-          phone_number: rest?.phone_number ? rest?.phone_number : "",
-          email: rest?.email ? rest?.email : "",
-          logo: rest?.logo ? rest?.logo : "",
-          favicon: rest?.favicon ? rest?.favicon : "",
-          telegram: rest?.telegram ? rest?.telegram : "",
-          instagram: rest?.instagram ? rest?.instagram : "",
-          meta_desc: {
-            ru: rest?.meta_desc?.ru ? rest?.meta_desc?.ru : "",
-            uz: rest?.meta_desc?.uz ? rest?.meta_desc?.uz : "",
-          },
-          meta_keywords: {
-            ru: rest?.meta_keywords?.ru ? rest?.meta_keywords?.ru : "",
-            uz: rest?.meta_keywords?.uz ? rest?.meta_keywords?.uz : "",
-          },
-        };
+        for(let item in this.ruleForm) {
+          this.ruleForm[item] = rest[item]
+        }
+        // this.ruleForm = {
+        //   phone_number: rest?.phone_number ? rest?.phone_number : "",
+        //   email: rest?.email ? rest?.email : "",
+        //   logo: rest?.logo ? rest?.logo : "",
+        //   favicon: rest?.favicon ? rest?.favicon : "",
+        //   telegram: rest?.telegram ? rest?.telegram : "",
+        //   instagram: rest?.instagram ? rest?.instagram : "",
+        //   meta_desc: {
+        //     ru: rest?.meta_desc?.ru ? rest?.meta_desc?.ru : "",
+        //     uz: rest?.meta_desc?.uz ? rest?.meta_desc?.uz : "",
+        //   },
+        //   meta_keywords: {
+        //     ru: rest?.meta_keywords?.ru ? rest?.meta_keywords?.ru : "",
+        //     uz: rest?.meta_keywords?.uz ? rest?.meta_keywords?.uz : "",
+        //   },
+        // };
         this.fileList = [
           {
             uid: "-1",
@@ -303,6 +349,15 @@ export default {
             url: rest?.md_favicon,
           },
         ];
+      this.fileList2 = rest?.qr_code ? [
+          {
+            uid: "-1",
+            name: "image.png",
+            status: "done",
+            oldImg: true,
+            url: rest?.qr_code_path || "",
+          },
+        ]:[];
       } catch (e) {
         this.statusFunc(e.response);
       }
@@ -346,8 +401,12 @@ export default {
 
       if (name == "logo") {
         this.fileList = fileList;
-      } else {
+      }
+      if(name == "favicon"){
         this.fileList1 = fileList;
+      }
+      if(name == "qr_code"){
+        this.fileList2 = fileList;
       }
     },
     handleCancel() {

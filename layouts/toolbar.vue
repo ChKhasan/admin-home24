@@ -726,6 +726,14 @@ export default {
           disabled: false,
           show: this.checkShow("regions"),
         },
+        {
+          name: `Валюта`,
+          index: "69",
+          to: "/settings/currency",
+          path: "settings-currency",
+          disabled: false,
+          show: this.checkShow("currency"),
+        },
       ],
     };
     await Promise.all([this.$store.dispatch("getShowCasesStore")]);

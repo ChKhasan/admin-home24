@@ -61,6 +61,16 @@
                   </el-form-item>
                 </div>
                 <div class="form-block">
+                  <el-form-item prop="email" label="Расположение (Ссылка)">
+                    <el-input
+                      v-model="ruleForm.location_url"
+                      placeholder="Расположение..."
+                      type="email"
+                    ></el-input>
+                  </el-form-item>
+                <a v-if="ruleForm.location_url" :href="ruleForm.location_url" target="_blank">Посмотреть на карте</a>
+                </div>
+                <div class="form-block">
                   <el-form-item prop="email" label="Электронная почта">
                     <el-input
                       v-model="ruleForm.email"
@@ -267,6 +277,7 @@ export default {
         telegram: "",
         instagram: "",
         qr_code: "",
+        location_url: "",
         meta_desc: {
           ru: "",
           uz: "",

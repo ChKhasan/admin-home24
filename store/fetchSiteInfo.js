@@ -16,4 +16,20 @@ export const actions = {
     });
     return res;
   },
+  async getCurreny({}, payload) {
+    const res = await this.$axios.$get(`/exchange_rates/1`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+    return res;
+  },
+  async editCurreny({}, payload) {
+    const res = await this.$axios.$put(`/exchange_rates/1`, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+      },
+    });
+    return res;
+  },
 };

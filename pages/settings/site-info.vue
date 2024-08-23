@@ -323,25 +323,17 @@ export default {
       try {
         const data = await this.$store.dispatch("fetchSiteInfo/getSiteInfo");
         const { created_at, id, updated_at, ...rest } = data.info;
+        const withObjKeys = ['meta_desc','location','meta_keywords']
         for(let item in this.ruleForm) {
-          this.ruleForm[item] = rest[item]
+          if(!withObjKeys.includes(item)) {
+
+            this.ruleForm[item] = rest[item] || ''
+          } else {
+            this.ruleForm[item] = rest[item] || { ru: "", uz: "" }
+
+          }
         }
-        // this.ruleForm = {
-        //   phone_number: rest?.phone_number ? rest?.phone_number : "",
-        //   email: rest?.email ? rest?.email : "",
-        //   logo: rest?.logo ? rest?.logo : "",
-        //   favicon: rest?.favicon ? rest?.favicon : "",
-        //   telegram: rest?.telegram ? rest?.telegram : "",
-        //   instagram: rest?.instagram ? rest?.instagram : "",
-        //   meta_desc: {
-        //     ru: rest?.meta_desc?.ru ? rest?.meta_desc?.ru : "",
-        //     uz: rest?.meta_desc?.uz ? rest?.meta_desc?.uz : "",
-        //   },
-        //   meta_keywords: {
-        //     ru: rest?.meta_keywords?.ru ? rest?.meta_keywords?.ru : "",
-        //     uz: rest?.meta_keywords?.uz ? rest?.meta_keywords?.uz : "",
-        //   },
-        // };
+   
         this.fileList = [
           {
             uid: "-1",

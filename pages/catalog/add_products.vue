@@ -105,10 +105,10 @@
                     ></div>
                   </div>
                 </div>
-                <span class="last-info" v-if="lastCategory.length > 2"
+                <!-- <span class="last-info" v-if="lastCategory.length > 2"
                   >Недавняя категория:
                   <p @click="reloadCategories">{{ findLastCategory }}</p></span
-                >
+                > -->
               </div>
               <el-tabs class="form_tabs" v-model="activeName">
                 <el-tab-pane
@@ -1306,26 +1306,26 @@ export default {
         this.ruleForm.products.length
       );
     },
-    findLastCategory() {
-      let allCategories = [];
-      if (this.cascaderCategories.length > 0 && this.lastCategory.length == 3) {
-        const findCategory = this.cascaderCategories.find(
-          (item) => item.id == this.lastCategory[0]
-        );
-        const findChildCategory = findCategory?.children.find(
-          (item) => item.id == this.lastCategory[1]
-        );
-        const findChild2Category = findChildCategory?.children.find(
-          (item) => item.id == this.lastCategory[2]
-        );
-        findCategory?.label && allCategories.push(findCategory?.label);
-        findChildCategory?.label && allCategories.push(findChildCategory?.label);
-        findChild2Category?.label && allCategories.push(findChild2Category?.label);
-      }
-      if (allCategories.length == 3) {
-        return allCategories.join("/");
-      }
-    },
+    // findLastCategory() {
+    //   let allCategories = [];
+    //   if (this.cascaderCategories.length > 0 && this.lastCategory.length == 3) {
+    //     const findCategory = this.cascaderCategories.find(
+    //       (item) => item.id == this.lastCategory[0]
+    //     );
+    //     const findChildCategory = findCategory?.children.find(
+    //       (item) => item.id == this.lastCategory[1]
+    //     );
+    //     const findChild2Category = findChildCategory?.children.find(
+    //       (item) => item.id == this.lastCategory[2]
+    //     );
+    //     findCategory?.label && allCategories.push(findCategory?.label);
+    //     findChildCategory?.label && allCategories.push(findChildCategory?.label);
+    //     findChild2Category?.label && allCategories.push(findChild2Category?.label);
+    //   }
+    //   if (allCategories.length == 3) {
+    //     return allCategories.join("/");
+    //   }
+    // },
   },
   mounted() {
     this.__GET_BRANDS();

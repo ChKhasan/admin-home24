@@ -12,6 +12,19 @@ export const actions = {
       return e.response;
     }
   },
+  async getDistricts({}, payload) {
+    try {
+      const res = await this.$axios.$get(`/districts`, {
+        params: payload,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+      });
+      return res;
+    } catch (e) {
+      return e.response;
+    }
+  },
   async getRegionsById({}, id) {
     const res = await this.$axios.$get(`/regions/${id}`, {
       headers: {

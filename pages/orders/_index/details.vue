@@ -47,7 +47,7 @@
                       Клиент</span
                     >
                     <div class="order-user">
-                      <p>{{ order?.user?.name }} {{ order?.user?.surname }}</p>
+                      <p>{{ order?.name }} {{ order?.surname }}</p>
                     </div>
                   </div>
                   <!-- <div class="order-details-items">
@@ -94,7 +94,7 @@
                       </svg>
                       Телефон</span
                     >
-                    <p>{{ `+${order?.phone_number}` }}</p>
+                    <p>{{ order?.phone_number }}</p>
                   </div>
                 </div>
                 <div class="custom_block px-4 py-4">
@@ -280,6 +280,51 @@
                     >
                     <p>{{ order?.courier_name ? order?.courier_name : "---" }}</p>
                   </div>
+                  <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Адрес</span
+                  >
+                  <p>{{ order?.address || "---" }}</p>
+                </div>
+                <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Область</span
+                  >
+                  <p>{{ isRegion }}</p>
+                </div>
+                <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Район</span
+                  >
+                  <p>{{ isDistrict }}</p>
+                </div>
                 </div>
               </div>
               <div>
@@ -726,6 +771,51 @@
                   >
                   <p>{{ order?.courier_name ? order?.courier_name : "---" }}</p>
                 </div>
+                <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Адрес</span
+                  >
+                  <p>{{ order?.address || "---" }}</p>
+                </div>
+                <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Область</span
+                  >
+                  <p>{{ isRegion }}</p>
+                </div>
+                <div class="order-details-items">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Map / Marker1</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"/>
+                            <path d="M5,10.5 C5,6 8,3 12.5,3 C17,3 20,6.75 20,10.5 C20,12.8325623 17.8236613,16.03566 13.470984,20.1092932 C12.9154018,20.6292577 12.0585054,20.6508331 11.4774555,20.1594925 C7.15915182,16.5078313 5,13.2880005 5,10.5 Z M12.5,12 C13.8807119,12 15,10.8807119 15,9.5 C15,8.11928813 13.8807119,7 12.5,7 C11.1192881,7 10,8.11928813 10,9.5 C10,10.8807119 11.1192881,12 12.5,12 Z" fill="currentColor" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    Район</span
+                  >
+                  <p>{{ isDistrict }}</p>
+                </div>
               </div>
               <div class="custom_block px-4 py-4">
                 <FormTitle title="Сведения о клиенте" />
@@ -1119,6 +1209,8 @@ export default {
           align: "right",
         },
       ],
+      regions: [],
+      districts: []
     };
   },
   async mounted() {
@@ -1132,8 +1224,18 @@ export default {
       });
     }
     this.__GET_ORDER();
+    this.__GET_REGIONS()
+    this.__GET_DISTRICTS()
     this.current = Number(this.$route.query.page);
     this.params.pageSize = Number(this.$route.query.per_page);
+  },
+  computed: {
+   isRegion() {
+    return this.regions.find((item) => item.id === this.order?.region_id)?.name?.uz || '----'
+   },
+   isDistrict() {
+    return this.districts.find((item) => item.id === this.order?.district_id)?.name?.uz || '----'
+   }
   },
   methods: {
     moment,
@@ -1178,6 +1280,14 @@ export default {
         this.loading = false;
         this.__GET_ORDER();
       } catch (e) {}
+    },
+    async __GET_REGIONS() {
+      const data = await this.$store.dispatch("fetchRegions/getRegions");
+      this.regions = data.regions?.data;
+    },
+    async __GET_DISTRICTS() {
+      const data = await this.$store.dispatch("fetchRegions/getDistricts",{page: 1, per_page: 999});
+      this.districts = data.districts?.data;
     },
   },
   watch: {

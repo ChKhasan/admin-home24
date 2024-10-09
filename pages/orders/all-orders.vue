@@ -69,7 +69,7 @@
           <span slot="user_address" slot-scope="text">{{
             text?.delivery_method == "pickup"
               ? "Самовывоз"
-              : text?.user_address?.region?.name?.ru
+              : regions.find((item) => item.value === text.region_id)?.label
           }}</span>
           <nuxt-link
             :to="`/orders/${text?.id}/details`"
@@ -134,7 +134,6 @@ export default {
   mixins: [global, columns, authAccess],
   data() {
     return {
-      
       operators: [],
       value1: "",
       operatorsValue: null,
@@ -177,7 +176,13 @@ export default {
     this.current = Number(this.$route.query.page);
     this.params.pageSize = Number(this.$route.query.per_page);
   },
+  computed: {
+   isRegion() {
+    return this.regions.find((item) => item.id === this.order?.region_id)?.name?.uz || '----'
+   },
+  },
   methods: {
+ 
     clickRow(obj) {
       this.$router.push(`/orders/${obj?.id}/details`);
     },
@@ -198,6 +203,7 @@ export default {
       }
 
       this.__GET_ORDERS();
+this.__GET_REGIONS();
     },
     moment,
     async __GET_ORDERS() {
@@ -215,7 +221,6 @@ export default {
           ...item,
           key: index + pageIndex,
           orderId: item.id,
-          phone_number: `+${item.phone_number}`,
           dateAdd: moment(item?.created_at).format("DD/MM/YYYY HH:mm"),
           count: item?.products.length,
         };
@@ -258,6 +263,7 @@ export default {
       }
 
       this.__GET_ORDERS();
+this.__GET_REGIONS();
     },
     indexPage(current_page, per_page) {
       return (current_page * 1 - 1) * per_page + 1;

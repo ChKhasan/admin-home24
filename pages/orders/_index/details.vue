@@ -850,7 +850,7 @@
                     Клиент</span
                   >
                   <div class="order-user">
-                    <p>{{ order?.user?.name }}</p>
+                    <p>{{ order?.name }} {{ order?.surname }}</p>
                   </div>
                 </div>
                 <div class="order-details-items">

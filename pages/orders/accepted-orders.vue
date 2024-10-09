@@ -50,7 +50,7 @@
           <span slot="user_address" slot-scope="text">{{
             text?.delivery_method == "pickup"
               ? "Самовывоз"
-              : text?.user_address?.region?.name?.ru
+              : regions.find((item) => item.id === text.region_id)?.name?.ru
           }}</span>
           <nuxt-link
             :to="`/orders/${text?.id}/details`"
@@ -117,6 +117,7 @@ export default {
       editIcon: require("../../assets/svg/components/edit-icon.svg"),
       loading: false,
       orders: [],
+      regions: []
     };
   },
   async mounted() {
@@ -136,8 +137,18 @@ export default {
     this.__GET_ORDERS();
     this.current = Number(this.$route.query.page);
     this.params.pageSize = Number(this.$route.query.per_page);
+    this.__GET_REGIONS()
+  },
+  computed: {
+   isRegion() {
+    return this.regions.find((item) => item.id === this.order?.region_id)?.name?.uz || '----'
+   },
   },
   methods: {
+    async __GET_REGIONS() {
+      const data = await this.$store.dispatch("fetchRegions/getRegions");
+      this.regions = data.regions?.data;
+    },
     clickRow(obj) {
       this.$router.push(`/orders/${obj?.id}/details`);
     },
@@ -157,7 +168,6 @@ export default {
           ...item,
           key: index + pageIndex,
           orderId: item.id,
-          phone_number: `+${item.phone_number}`,
           dateAdd: moment(item?.created_at).format("DD/MM/YYYY HH:mm"),
           count: item?.products.length,
         };

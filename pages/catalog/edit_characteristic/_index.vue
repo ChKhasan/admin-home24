@@ -87,7 +87,7 @@
                               ></el-input>
                             </el-form-item>
                           </div>
-                          <div
+                          <!-- <div
                             class="form-block mb-0"
                             :class="{
                               'multi-select-required': multiSelectError,
@@ -114,7 +114,7 @@
                                 </el-option>
                               </el-select>
                             </el-form-item>
-                          </div>
+                          </div> -->
                           <div class="variant_btns mb-1 mt-0">
                             <div
                               class="variant-btn variant-btn-delete mx-2"

@@ -216,7 +216,7 @@
 }
 .character-input-grid {
   display: grid;
-  grid-template-columns: 2fr 3fr auto;
+  grid-template-columns: 1fr auto;
   grid-gap: 8px;
   transition: transform 0.2s;
 }

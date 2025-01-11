@@ -893,7 +893,7 @@
                     </svg>
                     Телефон</span
                   >
-                  <p>{{ `+${order?.phone_number}` }}</p>
+                  <p>{{ order?.phone_number }}</p>
                 </div>
               </div>
             </div>

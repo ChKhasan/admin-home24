@@ -300,7 +300,7 @@
                       </el-form-item>
                     </div>
                     <div class="form-block">
-                      <el-form-item label="Keywords">
+                      <el-form-item label="Ключ-слова">
                         <el-input
                           type="textarea"
                           rows="5"
@@ -310,7 +310,7 @@
                       </el-form-item>
                     </div>
                     <div class="form-block mb-0">
-                      <el-form-item label="Meta-desctiption">
+                      <el-form-item label="Мета описание">
                         <el-input
                           type="textarea"
                           rows="5"

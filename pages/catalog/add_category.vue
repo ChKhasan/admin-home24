@@ -297,39 +297,48 @@
                   </div>
                 </div>
               </div>
-              <div class="form-container">
-                <div class="d-flex justify-content-between">
-                  <FormTitle title="SEO" />
-                </div>
-                <div class="form-block required">
-                  <el-form-item label="Slug">
-                    <el-input
-                      v-model="ruleForm.slug"
-                      placeholder="Слаг-аддрес"
-                    ></el-input>
-                  </el-form-item>
-                </div>
-                <div class="form-block required">
-                  <el-form-item label="Ключ-слова">
-                    <el-input
-                      type="textarea"
-                      rows="5"
-                      v-model="ruleForm.slug"
-                      placeholder="Ключ-слова"
-                    ></el-input>
-                  </el-form-item>
-                </div>
-                <div class="form-block required mb-0">
-                  <el-form-item label="Мета описание">
-                    <el-input
-                      type="textarea"
-                      rows="5"
-                      v-model="ruleForm.slug"
-                      placeholder="Модель продукта"
-                    ></el-input>
-                  </el-form-item>
-                </div>
-              </div>
+              <el-tabs class="form_tabs" v-model="activeName">
+                <el-tab-pane
+                  v-for="(item, index) in lang"
+                  :label="item.label"
+                  :name="item.label"
+                  :key="index"
+                >
+                  <div class="form-container">
+                    <div class="d-flex justify-content-between">
+                      <FormTitle title="SEO" />
+                    </div>
+                    <div class="form-block">
+                      <el-form-item label="Slug">
+                        <el-input
+                          v-model="ruleForm.slug"
+                          placeholder="Модель продукта"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                    <div class="form-block">
+                      <el-form-item label="Ключ-слова">
+                        <el-input
+                          type="textarea"
+                          rows="5"
+                          v-model="ruleForm.meta_keywords[item.key]"
+                          placeholder="Модель продукта"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                    <div class="form-block mb-0">
+                      <el-form-item label="Мета описание">
+                        <el-input
+                          type="textarea"
+                          rows="5"
+                          v-model="ruleForm.meta_desc[item.key]"
+                          placeholder="Модель продукта"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
             </div>
           </el-form>
           <div class="category-img-grid">
@@ -548,6 +557,17 @@ export default {
         position: null,
         is_active: 1,
         icon_svg: "",
+        meta_keywords: {
+          ru: "",
+          uz: "",
+          en: "",
+        },
+        meta_desc: {
+          ru: "",
+          uz: "",
+          en: "",
+        },
+        slug: ""
       },
       attributes: [],
       group_characteristics: [{ name: "", id: 1 }],
